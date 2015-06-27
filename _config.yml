@@ -8,8 +8,11 @@ relative_permalinks: true
 title:               Gemfile
 tagline:             I codes and I blogs
 url:                 http://nikitaavvakumov.github.io/gemfile
-paginate:            1
+paginate:            5
 baseurl:             ""
+
+# Formatting
+excerpt_separator:  "<!--more-->"
 
 # Assets
 #

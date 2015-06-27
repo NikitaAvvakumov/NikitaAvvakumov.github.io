@@ -18,8 +18,9 @@
   <link rel="stylesheet" href="/styles.css">
 
   <!-- Icons -->
-  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-precomposed.png">
+  <link rel="apple-icon-precomposed" sizes="144x144" href="/public/apple-icon-precomposed.png">
   <link rel="shortcut icon" href="/public/favicon.ico">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
   <!-- RSS -->
   <link rel="alternate" type="application/atom+xml" title="Gemfile" href="/atom.xml">
@@ -39,30 +40,212 @@
       <main>
         <div class="posts">
   
-  <article class="post">
-    <h1 class="post-title">
-      <a href="/2013/12/31/whats-jekyll/">
-        What's Jekyll?
-      </a>
-    </h1>
+    <article class="post">
+      <h1 class="post-title">
+        <a href="/2014/04/27/removing-paperclip-attachments/">
+          Removing Paperclip attachments
+        </a>
+      </h1>
 
-    <time datetime="2013-12-31T00:00:00+02:00" class="post-date">31 Dec 2013</time>
+      <time datetime="2014-04-27T13:54:08+03:00" class="post-date">27 Apr 2014</time>
 
-    <p><a href="http://jekyllrb.com">Jekyll</a> is a static site generator, an open-source tool for creating simple yet powerful websites of all shapes and sizes. From <a href="https://github.com/jekyll/jekyll/blob/master/README.markdown">the project’s readme</a>:</p>
+      <p>Paperclip’s <a href="https://github.com/thoughtbot/paperclip#deleting-an-attachment">GitHub page</a> includes the necessary steps to delete an attachment - the model’s attribute that refers to the attachment simply gets set to nil. Here is the full implementation of deleting a user’s profile picture in a Rails app. Start with tests (right?!):</p>
 
-<blockquote>
-  <p>Jekyll is a simple, blog aware, static site generator. It takes a template directory […] and spits out a complete, static website suitable for serving with Apache or your favorite web server. This is also the engine behind GitHub Pages, which you can use to host your project’s page or blog right here from GitHub.</p>
-</blockquote>
+<p><strong>spec/features/editing_users_spec.rb:</strong></p>
 
-<p>It’s an immensely useful tool. Find out more by <a href="https://github.com/jekyll/jekyll">visiting the project on GitHub</a>.</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="nb">require</span> <span class="s1">&#39;spec_helper&#39;</span>
+<span class="n">feature</span> <span class="s1">&#39;Editing Users&#39;</span> <span class="k">do</span>
+  <span class="n">let</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span> <span class="p">{</span> <span class="no">FactoryGirl</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span> <span class="p">}</span>
+  <span class="n">let</span><span class="p">(</span><span class="ss">:admin</span><span class="p">)</span> <span class="p">{</span> <span class="no">FactoryGirl</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">:admin</span><span class="p">)</span> <span class="p">}</span>
+  <span class="n">scenario</span> <span class="s1">&#39;removing user profile photo&#39;</span> <span class="k">do</span>
+    <span class="n">sign_in_as</span> <span class="n">admin</span> <span class="c1"># of course</span>
+    <span class="n">visit</span> <span class="n">edit_user_path</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+    <span class="n">click_link</span> <span class="s1">&#39;Remove profile photo&#39;</span>
+    <span class="n">expect</span><span class="p">(</span><span class="n">page</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">have_content</span> <span class="s1">&#39;User profile photo has been removed.&#39;</span>
+    <span class="n">expect</span><span class="p">(</span><span class="n">page</span><span class="p">)</span><span class="o">.</span><span class="n">not_to</span> <span class="n">have_css</span><span class="p">(</span><span class="s2">&quot;img[src*=&#39;user.png&#39;]&quot;</span><span class="p">)</span> <span class="c1"># file name of the user photo defined in the factory</span>
+    <span class="n">expect</span><span class="p">(</span><span class="n">page</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">have_css</span><span class="p">(</span><span class="s2">&quot;img[src*=&#39;paperclip_default.png&#39;]&quot;</span><span class="p">)</span> <span class="c1"># specified in the User model</span>
+  <span class="k">end</span>
+<span class="k">end</span></code></pre></div>
 
-  </article>
+<p>(<a href="/2014/04/27/paperclip-attachments-in-factories/">This post</a> covers creation of an attachment in a FactoryGirl factory.)</p>
+
+
+
+      
+      
+      
+        <p>
+          <a class="btn btn-sm btn-primary" href="/2014/04/27/removing-paperclip-attachments//#read-more" role="button">Read more <i class="fa fa-arrow-circle-right"></i></a>
+        </p>
+      
+
+    </article>
+  
+    <article class="post">
+      <h1 class="post-title">
+        <a href="/2014/04/27/paperclip-attachments-in-factories/">
+          Paperclip attachments in RSpec factories
+        </a>
+      </h1>
+
+      <time datetime="2014-04-27T12:11:46+03:00" class="post-date">27 Apr 2014</time>
+
+      <p>Assuming one has a model whose attachments are handled by Paperclip, i.e.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>rails generate paperclip user photo</code></pre></div>
+
+<p><strong>app/models/user.rb:</strong></p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">User</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+  <span class="n">has_attached_file</span> <span class="ss">:photo</span>
+<span class="k">end</span></code></pre></div>
+
+<p>then to generate a test model with FactoryGirl, including the attachment:</p>
+
+<p><strong>spec/factories/user_factory.rb:</strong></p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="kp">include</span> <span class="no">ActionDispatch</span><span class="o">::</span><span class="no">TestProcess</span>
+<span class="no">FactoryGirl</span><span class="o">.</span><span class="n">define</span> <span class="k">do</span>
+  <span class="n">factory</span> <span class="ss">:user</span> <span class="k">do</span>
+    <span class="nb">name</span> <span class="s1">&#39;Sample User&#39;</span>
+    <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+    <span class="n">photo</span> <span class="p">{</span> <span class="n">fixture_file_upload</span><span class="p">(</span><span class="no">Rails</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;spec/fixtures/test_img.png&#39;</span><span class="p">),</span> <span class="s1">&#39;image/png&#39;</span><span class="p">)</span> <span class="p">}</span>
+  <span class="k">end</span>
+<span class="k">end</span></code></pre></div>
+
+<p>Various manipulations of the attached image through the web interface can then be tested with RSpec and Capybara.</p>
+
+
+
+      
+      
+      
+
+    </article>
+  
+    <article class="post">
+      <h1 class="post-title">
+        <a href="/2014/04/27/testing-images-with-rspec/">
+          Testing images with RSpec
+        </a>
+      </h1>
+
+      <time datetime="2014-04-27T11:58:38+03:00" class="post-date">27 Apr 2014</time>
+
+      <p>To test whether the right image is displayed on a page:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">expect</span><span class="p">(</span><span class="n">page</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">have_css</span><span class="p">(</span><span class="s2">&quot;img[src*=&#39;image_name.png&#39;]&quot;</span><span class="p">)</span></code></pre></div>
+
+<p>i.e. “Expect page to have an <code>&lt;img&gt;</code> tag whose <code>src</code> attribute contains the name of the required image.”</p>
+
+
+
+      
+      
+      
+
+    </article>
+  
+    <article class="post">
+      <h1 class="post-title">
+        <a href="/2014/04/17/delegate-your-model-methods/">
+          Learn to delegate (your model methods)
+        </a>
+      </h1>
+
+      <time datetime="2014-04-17T16:10:42+03:00" class="post-date">17 Apr 2014</time>
+
+      <p><code>delegate</code> is neat trick that allows one to write cleaner, neater code. Particularly when dealing with ActiveRecord associations, <code>delegate</code> makes it possible to “outsource” a method to an associated object.</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Book</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+  <span class="c1"># has attribute &#39;author&#39;</span>
+<span class="k">end</span>
+
+<span class="k">class</span> <span class="nc">Chapter</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+  <span class="n">belongs_to</span> <span class="ss">:book</span>
+  <span class="n">delegate</span> <span class="ss">:author</span><span class="p">,</span> <span class="ss">to</span><span class="p">:</span> <span class="ss">:book</span>
+<span class="k">end</span></code></pre></div>
+
+<p>Without <code>delegate</code>, when dealing with a <code>Chapter</code> object, you’d need to access the book’s author via <code>chapter.book.author</code>. With delegation, this can be neatly shortened to <code>chapter.author</code>, with the <code>.author</code> getting handed off to the associated <code>Book</code> object.</p>
+
+<p>An object can delegate multiple methods to its association, as shown in the example below. Another handy option is to use <em>prefixes</em> with <code>delegate</code>. For instance, using the same approach as above to refer to the book’s title would create <code>chapter.title</code>, which is confusing. With prefixes, however:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Chapter</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+  <span class="n">belongs_to</span> <span class="ss">:book</span>
+  <span class="n">delegate</span> <span class="ss">:author</span><span class="p">,</span> <span class="ss">:title</span><span class="p">,</span> <span class="ss">to</span><span class="p">:</span> <span class="ss">:book</span><span class="p">,</span> <span class="ss">prefix</span><span class="p">:</span> <span class="kp">true</span>
+<span class="k">end</span>
+
+<span class="n">chapter</span><span class="o">.</span><span class="n">book_title</span>   <span class="c1"># returns book&#39;s title</span>
+<span class="n">chapter</span><span class="o">.</span><span class="n">book_author</span>  <span class="c1"># returns book&#39;s author</span></code></pre></div>
+
+<p>(Of course, if chapters had their own titles, the above code would make them inaccessible, but that’s what you get with contrived examples. See <a href="http://pivotallabs.com/rails-delegates-are-even-more-useful-than-i-knew/">this post</a> on the Pivotal Labs’ blog for a solution.)</p>
+
+<p>One final tidbit to touch upon is that <code>delegate</code> is not limited to deliberately created methods and attributes but extends equally well to those created behind the scenes by the association:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Quote</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+  <span class="n">belongs_to</span> <span class="ss">:chapter</span>
+  <span class="n">delegate</span> <span class="ss">:book</span><span class="p">,</span> <span class="ss">to</span><span class="p">:</span> <span class="ss">:chapter</span>
+<span class="k">end</span>
+
+<span class="n">quote</span><span class="o">.</span><span class="n">book</span>  <span class="c1"># returns the book object associated with the chapter to which the quote belongs</span></code></pre></div>
+
+<p>For more on <code>delegate</code>, including custom prefixes and how to handle NoMethodErrors, see the <a href="http://apidock.com/rails/Module/delegate">API Docs</a>.</p>
+
+
+
+      
+      
+      
+
+    </article>
+  
+    <article class="post">
+      <h1 class="post-title">
+        <a href="/2014/04/10/is-it-changed/">
+          Is it changed?
+        </a>
+      </h1>
+
+      <time datetime="2014-04-10T09:35:58+03:00" class="post-date">10 Apr 2014</time>
+
+      <p>Rails has some useful methods to check whether an object has changed since first being loaded into memory. Here are some examples:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">2.1.0 :001 &gt; <span class="nv">user</span> <span class="o">=</span> User.find<span class="o">(</span>1<span class="o">)</span>
+ <span class="o">=</span>&gt; <span class="c">#&lt;User id: 1, name: &quot;Roderick&quot;, email: &quot;rod@example.com&quot;, created_at: ..., updated_at: ...&gt;</span>
+2.1.0 :002 &gt; user.name <span class="o">=</span> <span class="s1">&#39;Jimmy&#39;</span>
+ <span class="o">=</span>&gt; <span class="s2">&quot;Jimmy&quot;</span>
+2.1.0 :003 &gt; user.changed?
+ <span class="o">=</span>&gt; <span class="nb">true</span>
+2.1.0 :004 &gt; user.changed
+ <span class="o">=</span>&gt; <span class="o">[</span><span class="s2">&quot;name&quot;</span><span class="o">]</span>
+2.1.0 :005 &gt; user.changes
+ <span class="o">=</span>&gt; <span class="o">{</span><span class="s2">&quot;name&quot;</span><span class="o">=</span>&gt;<span class="o">[</span><span class="s2">&quot;Roderick&quot;</span>, <span class="s2">&quot;Jimmy&quot;</span><span class="o">]}</span>
+2.1.0 :006 &gt; user.name_changed?
+ <span class="o">=</span>&gt; <span class="nb">true</span>
+2.1.0 :007 &gt; user.email_changed?
+ <span class="o">=</span>&gt; <span class="nb">false</span>
+2.1.0 :008 &gt; user.name_was
+ <span class="o">=</span>&gt; <span class="s2">&quot;Roderick&quot;</span>
+2.1.0 :009 &gt; user.save
+ <span class="o">=</span>&gt; <span class="nb">true</span>
+2.1.0 :010 &gt; user.changed?
+ <span class="o">=</span>&gt; <span class="nb">false</span></code></pre></div>
+
+<p>More info here: <a href="http://api.rubyonrails.org/classes/ActiveModel/Dirty.html">ActiveModel::Dirty</a>.</p>
+
+
+
+      
+      
+      
+
+    </article>
   
 </div>
 
 <div class="pagination">
   
-    <span class="pagination-item older">Older</span>
+    <a class="pagination-item older" href="/page4">Older</a>
   
   
     <a class="pagination-item newer" href="/page2">Newer</a>
@@ -73,10 +256,22 @@
 
       <footer class="footer">
         <small>
-          &copy; <time datetime="2015-06-26T23:38:28+03:00">2015</time>. All rights reserved.
+          &copy; <time datetime="2015-06-27T13:15:57+03:00">2015</time> Nikita Avvakumov.
+          Happily made with <a href="http://demo.getpoole.com/">Poole</a>.
         </small>
       </footer>
     </div>
+
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-64562360-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
 
   </body>
 </html>

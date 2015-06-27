@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="UTF-8">
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>
+    
+      do..end vs {}: Not just a matter of style! &middot; Gemfile
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/styles.css">
+
+  <!-- Icons -->
+  <link rel="apple-icon-precomposed" sizes="144x144" href="/public/apple-icon-precomposed.png">
+  <link rel="shortcut icon" href="/public/favicon.ico">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/atom+xml" title="Gemfile" href="/atom.xml">
+</head>
+
+
+  <body>
+
+    <div class="container content">
+      <header class="masthead">
+        <h3 class="masthead-title">
+          <a href="/" title="Home">Gemfile</a>
+          <small>I codes and I blogs</small>
+        </h3>
+      </header>
+
+      <main>
+        <article class="post">
+  <h1 class="post-title">do..end vs {}: Not just a matter of style!</h1>
+  <time datetime="2014-04-04T11:54:40+03:00" class="post-date">04 Apr 2014</time>
+  <p>“Use curly braces for single-line blocks and <code>do..end</code> for multi-lines blocks.” After seeing various permutations of that statement dozens of times, one can come to believe that the difference between the two is purely stylistic and that there is no practical reason to opt for one vs. the other. Most of the time, that is, indeed, true. Until that one-time-in-a-thousand when it’s not.</p>
+
+<p>The trouble with <code>do..end</code> vs. <code>{}</code> can show up thanks to (a) Ruby’s laid-back attitude towards syntax, and (b) the fact that the two kinds of block delimiters do not behave 100% identically.</p>
+
+<p>The syntax slackness in question is the optional usage of parentheses around method parameters. For instance, the following line pairs of code are identical:</p>
+
+<div class="highlight"><pre><code class="language-erb" data-lang="erb"><span class="x">FactoryGirl.create(:user) # is the same as</span>
+<span class="x">FactoryGirl.create :user</span>
+
+<span class="cp">&lt;%=</span> <span class="n">link_to</span><span class="p">(</span><span class="s1">&#39;Sign in&#39;</span><span class="p">,</span> <span class="n">signin_path</span><span class="p">)</span> <span class="cp">%&gt;</span><span class="x"> # is the same as</span>
+<span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s1">&#39;Sign in&#39;</span><span class="p">,</span> <span class="n">signin_path</span> <span class="cp">%&gt;</span><span class="x"></span></code></pre></div>
+
+<p>The parentheses can be safely omitted from method calls in the vast majority of cases. That is, unless a block is involved, which brings us to (b).
+The not-so-subtle difference between <code>do..end</code> and <code>{}</code> is their order of precedence - the curly braces rank higher on that score than <code>do..end</code>. This means that in a parentheses-less method call, the curly braces will bind the block to the preceding parameter, while <code>do..end</code> will bind it to the method.</p>
+
+<p>Example:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>rails console
+2.1.0 :001 &gt; puts <span class="o">[</span>1, 2, 3<span class="o">]</span>.map <span class="o">{</span> <span class="p">|</span>x<span class="p">|</span> x * <span class="m">2</span> <span class="o">}</span>
+2
+4
+6
+2.1.0 :002 &gt; puts <span class="o">[</span>1, 2, 3<span class="o">]</span>.map <span class="k">do</span> <span class="p">|</span>x<span class="p">|</span> x * 2<span class="p">;</span> end
+<span class="c">#&lt;Enumerator:hex_code&gt;</span></code></pre></div>
+
+<p>The first command was equivalent to</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">puts<span class="o">([</span>1, 2, 3<span class="o">]</span>.map <span class="o">{</span> <span class="p">|</span>x<span class="p">|</span> x * <span class="m">2</span> <span class="o">})</span></code></pre></div>
+
+<p>while the second was interpreted as</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">puts<span class="o">([</span>1, 2, 3<span class="o">]</span>.map<span class="o">)</span> <span class="o">{</span> <span class="p">|</span>x<span class="p">|</span> x * <span class="m">2</span> <span class="o">}</span></code></pre></div>
+
+<p>In the first case, the block was passed to <code>.map</code>, which evaluated it and then gave the result back to <code>puts</code>. In the second case, the block was passed to <code>puts</code>, which ignored it and only reported that calling <code>.map</code> on an array yields an <code>Enumerator</code> object.</p>
+
+</article>
+
+
+<aside class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2015/06/11/selective-stubbing-of-method-calls-in-rspec/">
+            Selective stubbing of method calls in RSpec
+            <small><time datetime="2015-06-11T00:00:00+03:00">11 Jun 2015</time></small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2015/06/11/euro-pound-dollar-yen-ruble/">
+            € £ $ ¥ ₽
+            <small><time datetime="2015-06-11T00:00:00+03:00">11 Jun 2015</time></small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2015/04/18/git-hooks-ctags-and-rails/">
+            git hooks, Ctags & Rails
+            <small><time datetime="2015-04-18T00:00:00+03:00">18 Apr 2015</time></small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</aside>
+
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'nikitaavvakumov';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+      </main>
+
+      <footer class="footer">
+        <small>
+          &copy; <time datetime="2015-06-27T13:15:57+03:00">2015</time> Nikita Avvakumov.
+          Happily made with <a href="http://demo.getpoole.com/">Poole</a>.
+        </small>
+      </footer>
+    </div>
+
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-64562360-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+  </body>
+</html>

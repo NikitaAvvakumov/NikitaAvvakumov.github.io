@@ -18,8 +18,9 @@
   <link rel="stylesheet" href="/styles.css">
 
   <!-- Icons -->
-  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-precomposed.png">
+  <link rel="apple-icon-precomposed" sizes="144x144" href="/public/apple-icon-precomposed.png">
   <link rel="shortcut icon" href="/public/favicon.ico">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
   <!-- RSS -->
   <link rel="alternate" type="application/atom+xml" title="Gemfile" href="/atom.xml">
@@ -39,56 +40,159 @@
       <main>
         <div class="posts">
   
-  <article class="post">
-    <h1 class="post-title">
-      <a href="/2014/01/02/introducing-poole/">
-        Introducing Poole
-      </a>
-    </h1>
+    <article class="post">
+      <h1 class="post-title">
+        <a href="/2015/06/11/selective-stubbing-of-method-calls-in-rspec/">
+          Selective stubbing of method calls in RSpec
+        </a>
+      </h1>
 
-    <time datetime="2014-01-02T00:00:00+02:00" class="post-date">02 Jan 2014</time>
+      <time datetime="2015-06-11T00:00:00+03:00" class="post-date">11 Jun 2015</time>
 
-    <p><em>The Strange Case of Dr. Jekyll and Mr. Hyde</em> tells the story of a lawyer investigating the connection of two persons, Dr. Henry Jekyll and Mr. Edward Hyde. Chief among the novel’s supporting cast is a man by the name of Mr. Poole, Dr. Jekyll’s loyal butler.</p>
+      <p>While building a simple API in Rails, I had the following method in my User model that needed to be tested:</p>
 
-<hr />
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">generate_auth_token!</span>
+  <span class="kp">loop</span> <span class="k">do</span>
+    <span class="nb">self</span><span class="o">.</span><span class="n">auth_token</span> <span class="o">=</span> <span class="no">Devise</span><span class="o">.</span><span class="n">friendly_token</span>
+    <span class="k">break</span> <span class="k">unless</span> <span class="nb">self</span><span class="o">.</span><span class="n">class</span><span class="o">.</span><span class="n">exists?</span><span class="p">(</span><span class="ss">auth_token</span><span class="p">:</span> <span class="n">auth_token</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span></code></pre></div>
 
-<p>Poole is the butler for <a href="http://jekyllrb.com">Jekyll</a>, the static site generator. It’s designed and developed by <a href="https://twitter.com/mdo">@mdo</a> to provide a clear and concise foundational setup for any Jekyll site. It does so by furnishing a full vanilla Jekyll install with example templates, pages, posts, and styles.</p>
+<p>The method uses Devise’s <code>friendly_token</code> method to generate an authentication token for a new user record. After calling the method once, the loop checks whether a user record with the same auth token already exists. If the answer is positive, the method goes for a second try; otherwise it breaks out of the loop, mission accomplished.</p>
 
-<p>There are currently two themes built on Poole:</p>
 
-<ul>
-  <li><a href="http://hyde.getpoole.com">Hyde</a></li>
-  <li><a href="http://lanyon.getpoole.com">Lanyon</a></li>
-</ul>
 
-<p>Learn more and contribute on <a href="https://github.com/poole">GitHub</a>.</p>
+      
+      
+      
+        <p>
+          <a class="btn btn-sm btn-primary" href="/2015/06/11/selective-stubbing-of-method-calls-in-rspec//#read-more" role="button">Read more <i class="fa fa-arrow-circle-right"></i></a>
+        </p>
+      
 
-<h3 id="whats-included">What’s included</h3>
+    </article>
+  
+    <article class="post">
+      <h1 class="post-title">
+        <a href="/2015/06/11/euro-pound-dollar-yen-ruble/">
+          € £ $ ¥ ₽
+        </a>
+      </h1>
 
-<p>Poole is a streamlined Jekyll site designed and built as a foundation for building more meaningful themes. Poole, and every theme built on it, includes the following:</p>
+      <time datetime="2015-06-11T00:00:00+03:00" class="post-date">11 Jun 2015</time>
 
-<ul>
-  <li>Complete Jekyll setup included (layouts, config, <a href="/404.html">404</a>, <a href="/atom.xml">RSS feed</a>, posts, and <a href="/about">example page</a>)</li>
-  <li>Mobile friendly design and development</li>
-  <li>Easily scalable text and component sizing with <code>rem</code> units in the CSS</li>
-  <li>Support for a wide gamut of HTML elements</li>
-  <li>Related posts (time-based, because Jekyll) below each post</li>
-  <li>Syntax highlighting, courtesy Pygments (the Python-based code snippet highlighter)</li>
-</ul>
+      <p>Thanks to Stack Overflow’s <a href="http://stackoverflow.com/research/developer-survey-2015">annual survey</a>, we now have this gem (pun intended) of data:</p>
 
-<p>Additional features are available in individual themes.</p>
+<p><a href="http://stackoverflow.com/research/developer-survey-2015#work-complang"><img src="https://gemfile.files.wordpress.com/2015/06/screen-shot-2015-06-11-at-9-38-02-am.png" alt="US compensation" /></a>
+<a href="http://stackoverflow.com/research/developer-survey-2015#work-complang"><img src="https://gemfile.files.wordpress.com/2015/06/screen-shot-2015-06-11-at-9-39-20-am.png" alt="Eastern Europe compensation" /></a></p>
 
-<h3 id="browser-support">Browser support</h3>
+<p>Is this as absurd as it appears? Let’s take a closer look.</p>
 
-<p>Poole and its themes are by preference a forward-thinking project. In addition to the latest versions of Chrome, Safari (mobile and desktop), and Firefox, it is only compatible with Internet Explorer 9 and above.</p>
 
-<h3 id="download">Download</h3>
 
-<p>Poole is developed on and hosted with GitHub. Head to the <a href="https://github.com/poole/poole">GitHub repository</a> for downloads, bug reports, and features requests.</p>
+      
+      
+      
+        <p>
+          <a class="btn btn-sm btn-primary" href="/2015/06/11/euro-pound-dollar-yen-ruble//#read-more" role="button">Read more <i class="fa fa-arrow-circle-right"></i></a>
+        </p>
+      
 
-<p>Thanks!</p>
+    </article>
+  
+    <article class="post">
+      <h1 class="post-title">
+        <a href="/2015/04/18/git-hooks-ctags-and-rails/">
+          git hooks, Ctags & Rails
+        </a>
+      </h1>
 
-  </article>
+      <time datetime="2015-04-18T00:00:00+03:00" class="post-date">18 Apr 2015</time>
+
+      <p>Small adjustment to Tim Pope’s outstanding <a href="http://tbaggery.com/2011/08/08/effortless-ctags-with-git.html">Effortless Ctags with Git</a>:</p>
+
+<p>To get ctags to also index all bundled gems (including Rails), make the following change to the <code>ctags</code> hook</p>
+
+<p>Replace</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">git ls-files <span class="p">|</span> <span class="se">\</span>
+  ctags --tag-relative -L - -f<span class="s2">&quot;$dir/$$.tags&quot;</span> --languages<span class="o">=</span>-javascript,sql</code></pre></div>
+
+<p>with</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">ctags --recurse --tag-relative -f<span class="s2">&quot;$dir/$$.tags&quot;</span> --languages<span class="o">=</span>-javascript,sql <span class="sb">`</span>bundle show --paths<span class="sb">`</span> <span class="sb">`</span>git ls-files<span class="sb">`</span></code></pre></div>
+
+<p>After triggering the hook, the <code>tags</code> file takes a few seconds to generate in the background - have patience :)</p>
+
+
+
+      
+      
+      
+
+    </article>
+  
+    <article class="post">
+      <h1 class="post-title">
+        <a href="/2015/02/15/_/">
+          _
+        </a>
+      </h1>
+
+      <time datetime="2015-02-15T00:00:00+02:00" class="post-date">15 Feb 2015</time>
+
+      <p>That nondescript title is not a placeholder - this post is really about the
+underscore. It arose out of one of those rewarding moments where you suddenly
+feel that there must be a way to do something better, and a search quickly
+reveals that, indeed, there is.</p>
+
+<p>Ever evaluate a complex - particularly multi-line - expression in irb or
+Rails console and immediately after hitting the
+Return key realize that you’ve neglected to assign the return value to a
+variable? Suffer no more:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="mi">2</span><span class="o">.</span><span class="mi">2</span><span class="o">.</span><span class="mi">0</span> <span class="p">:</span><span class="mo">001</span> <span class="o">&gt;</span> <span class="o">[[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="o">]</span><span class="p">,</span> <span class="o">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="o">]].</span><span class="n">map</span> <span class="k">do</span> <span class="o">|</span><span class="n">pair</span><span class="o">|</span>
+<span class="mi">2</span><span class="o">.</span><span class="mi">2</span><span class="o">.</span><span class="mi">0</span> <span class="p">:</span><span class="mo">002</span> <span class="o">&gt;</span>   <span class="n">pair</span><span class="o">[</span><span class="mi">0</span><span class="o">]*</span><span class="mi">2</span> <span class="o">+</span> <span class="n">pair</span><span class="o">[</span><span class="mi">1</span><span class="o">]*</span><span class="mi">3</span>
+<span class="mi">2</span><span class="o">.</span><span class="mi">2</span><span class="o">.</span><span class="mi">0</span> <span class="p">:</span><span class="mo">003</span> <span class="o">&gt;</span> <span class="k">end</span>
+<span class="o">=&gt;</span> <span class="o">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">18</span><span class="o">]</span>
+<span class="mi">2</span><span class="o">.</span><span class="mi">2</span><span class="o">.</span><span class="mi">0</span> <span class="p">:</span><span class="mo">004</span> <span class="o">&gt;</span> <span class="n">_</span>
+<span class="o">=&gt;</span> <span class="o">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">18</span><span class="o">]</span>
+<span class="mi">2</span><span class="o">.</span><span class="mi">2</span><span class="o">.</span><span class="mi">0</span> <span class="p">:</span><span class="mo">005</span> <span class="o">&gt;</span> <span class="n">_</span><span class="o">.</span><span class="n">map</span> <span class="p">{</span> <span class="o">|</span><span class="n">c</span><span class="o">|</span> <span class="n">c</span><span class="o">*</span><span class="mi">2</span> <span class="p">}</span>
+<span class="o">=&gt;</span> <span class="o">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">36</span><span class="o">]</span></code></pre></div>
+
+<p>See that little line on lines 4 &amp; 5?! Saved by the humble underscore.</p>
+
+
+
+      
+      
+      
+
+    </article>
+  
+    <article class="post">
+      <h1 class="post-title">
+        <a href="/2015/01/23/hash-%5B%5D/">
+          Hash[ ]
+        </a>
+      </h1>
+
+      <time datetime="2015-01-23T00:00:00+02:00" class="post-date">23 Jan 2015</time>
+
+      <p>Calling the <code>[]</code> method on Hash converts a one-dimensional array with an even number of elements into a hash, with odd/even elements alternating as keys/values. Very cool</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="mi">2</span><span class="o">.</span><span class="mi">2</span><span class="o">.</span><span class="mi">0</span> <span class="p">:</span><span class="mo">001</span> <span class="o">&gt;</span> <span class="no">Hash</span><span class="o">[</span><span class="s1">&#39;key1&#39;</span><span class="p">,</span> <span class="s1">&#39;value1&#39;</span><span class="p">,</span> <span class="s1">&#39;key2&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="o">]</span>
+ <span class="o">=&gt;</span> <span class="p">{</span><span class="s2">&quot;key1&quot;</span><span class="o">=&gt;</span><span class="s2">&quot;value1&quot;</span><span class="p">,</span> <span class="s2">&quot;key2&quot;</span><span class="o">=&gt;</span><span class="mi">5</span><span class="p">}</span>
+<span class="mi">2</span><span class="o">.</span><span class="mi">2</span><span class="o">.</span><span class="mi">0</span> <span class="p">:</span><span class="mo">002</span> <span class="o">&gt;</span> <span class="no">Hash</span><span class="o">[</span><span class="s1">&#39;k1&#39;</span><span class="p">,</span> <span class="s1">&#39;v1&#39;</span><span class="p">,</span> <span class="s1">&#39;k2&#39;</span><span class="o">]</span>
+ <span class="o">=&gt;</span> <span class="ss">ArgumentError</span><span class="p">:</span> <span class="n">odd</span> <span class="n">number</span> <span class="n">of</span> <span class="n">arguments</span> <span class="k">for</span> <span class="no">Hash</span></code></pre></div>
+
+
+
+      
+      
+      
+
+    </article>
   
 </div>
 
@@ -105,10 +209,22 @@
 
       <footer class="footer">
         <small>
-          &copy; <time datetime="2015-06-26T23:38:28+03:00">2015</time>. All rights reserved.
+          &copy; <time datetime="2015-06-27T13:15:57+03:00">2015</time> Nikita Avvakumov.
+          Happily made with <a href="http://demo.getpoole.com/">Poole</a>.
         </small>
       </footer>
     </div>
+
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-64562360-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
 
   </body>
 </html>

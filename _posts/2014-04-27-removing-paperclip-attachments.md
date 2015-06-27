@@ -29,11 +29,13 @@ end
 
 ([This post]({% post_url 2014-04-27-paperclip-attachments-in-factories %}) covers creation of an attachment in a FactoryGirl factory.)
 
+<!--more-->
+
 Red. The test first fails when it tries to find a "Remove profile photo" link. In my implementation, photo removal takes place in the Edit view, so that's where the link goes (or, to be more precise, into the 'form' partial):
 
 **app/views/users/_form.html.erb:**
 {% highlight erb %}
-<%= form_for @user do |f|
+<%= form_for @user do |f| %>
   <%= f.label :photo, 'Profile photo' %>
   <%= f.file_field :photo %>
   <% if @user.persisted? %>

@@ -13,6 +13,7 @@ be weighed against the costs of its implementation. Cucumber is a costly
 framework in terms of development time, developer effort, and cognitive strain
 on both creators and readers of tests due to the following:
 
+<!--more-->
 - Gherkin is an awkward sort-of-but-not-quite English
 - Scenarios written in Gherkin need to be then translated into Ruby in a
   separate file (both good and bad, see below)

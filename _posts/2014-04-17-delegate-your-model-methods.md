@@ -30,7 +30,7 @@ class Chapter < ActiveRecord::Base
   belongs_to :book
   delegate :author, :title, to: :book, prefix: true
 end
- 
+
 chapter.book_title   # returns book's title
 chapter.book_author  # returns book's author
 {% endhighlight %}
@@ -40,7 +40,7 @@ chapter.book_author  # returns book's author
 One final tidbit to touch upon is that `delegate` is not limited to deliberately created methods and attributes but extends equally well to those created behind the scenes by the association:
 
 {% highlight ruby %}
-class Quote < ActiveRecord::Base
+class Quote < ActiveRecord::Base
   belongs_to :chapter
   delegate :book, to: :chapter
 end
