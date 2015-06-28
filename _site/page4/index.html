@@ -43,6 +43,48 @@
   
     <article class="post">
       <h1 class="post-title">
+        <a href="/2014/04/10/is-it-changed/">
+          Is it changed?
+        </a>
+      </h1>
+
+      <time datetime="2014-04-10T09:35:58+03:00" class="post-date">10 Apr 2014</time>
+
+      <p>Rails has some useful methods to check whether an object has changed since first being loaded into memory. Here are some examples:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">2.1.0 :001 &gt; <span class="nv">user</span> <span class="o">=</span> User.find<span class="o">(</span>1<span class="o">)</span>
+ <span class="o">=</span>&gt; <span class="c">#&lt;User id: 1, name: &quot;Roderick&quot;, email: &quot;rod@example.com&quot;, created_at: ..., updated_at: ...&gt;</span>
+2.1.0 :002 &gt; user.name <span class="o">=</span> <span class="s1">&#39;Jimmy&#39;</span>
+ <span class="o">=</span>&gt; <span class="s2">&quot;Jimmy&quot;</span>
+2.1.0 :003 &gt; user.changed?
+ <span class="o">=</span>&gt; <span class="nb">true</span>
+2.1.0 :004 &gt; user.changed
+ <span class="o">=</span>&gt; <span class="o">[</span><span class="s2">&quot;name&quot;</span><span class="o">]</span>
+2.1.0 :005 &gt; user.changes
+ <span class="o">=</span>&gt; <span class="o">{</span><span class="s2">&quot;name&quot;</span><span class="o">=</span>&gt;<span class="o">[</span><span class="s2">&quot;Roderick&quot;</span>, <span class="s2">&quot;Jimmy&quot;</span><span class="o">]}</span>
+2.1.0 :006 &gt; user.name_changed?
+ <span class="o">=</span>&gt; <span class="nb">true</span>
+2.1.0 :007 &gt; user.email_changed?
+ <span class="o">=</span>&gt; <span class="nb">false</span>
+2.1.0 :008 &gt; user.name_was
+ <span class="o">=</span>&gt; <span class="s2">&quot;Roderick&quot;</span>
+2.1.0 :009 &gt; user.save
+ <span class="o">=</span>&gt; <span class="nb">true</span>
+2.1.0 :010 &gt; user.changed?
+ <span class="o">=</span>&gt; <span class="nb">false</span></code></pre></div>
+
+<p>More info here: <a href="http://api.rubyonrails.org/classes/ActiveModel/Dirty.html">ActiveModel::Dirty</a>.</p>
+
+
+
+      
+      
+      
+
+    </article>
+  
+    <article class="post">
+      <h1 class="post-title">
         <a href="/2014/04/04/block-delimiters-not-just-a-matter-of-style/">
           do..end vs {}: Not just a matter of style!
         </a>
@@ -220,7 +262,7 @@ NoMethodError: undefined method <span class="s1">&#39;admin?&#39;</span> <span c
 
       <footer class="footer">
         <small>
-          &copy; <time datetime="2015-06-27T13:22:17+03:00">2015</time> Nikita Avvakumov.
+          &copy; <time datetime="2015-06-28T13:22:29+03:00">2015</time> Nikita Avvakumov.
           Happily made with <a href="http://demo.getpoole.com/">Poole</a>.
         </small>
       </footer>

@@ -43,6 +43,54 @@
   
     <article class="post">
       <h1 class="post-title">
+        <a href="/2014/06/13/the-rails-machine/">
+          The Rails Machine
+        </a>
+      </h1>
+
+      <time datetime="2014-06-13T00:00:00+03:00" class="post-date">13 Jun 2014</time>
+
+      <p>I’ve been working through - and enjoying - the <a href="https://courses.edx.org/courses/BerkeleyX/CS_CS169.2x/1T2014/info">EdX/Berkeley CS169 course</a> for the past couple of months. With a bit of a break between the two halves, I thought I’d start a small Rails project of my own. After including <code>rspec-rails</code> in the Gemfile, I ran bundle install and then</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>rails g rspec:install
+Could not find generator rspec:install</code></pre></div>
+
+<p>This was bad. I naturally blamed the gem first, and spent an awful lot of time digging for an answer. At one point, as a control, I added the <code>cucumber-rails</code> gem</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>rails g cucumber:install
+Could not find generator cucumber:install</code></pre></div>
+
+<p>This was much worse. The gems were installed and bundled, no errors, no missing dependencies. I went as far as installing the latest Ruby, creating a new gemset, reinstalling Rails, …</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">Could not find generator cucumber:install</code></pre></div>
+
+<p>Running <code>rails g</code> only showed the built-in Rails generators: model, controller, etc. None of the gem generators would show up. This meant no devise, no foundation, no bootstrap, no hundreds of other gems that I haven’t used or that have not even been written yet. I dug deeper, hitting pages 3 and 4 of my Google searches, looking at questions and answers from 2, 3, 4 years ago. Nothing.</p>
+
+<p>It was late. I turned off the computer, which I rarely do, and went to bed.
+In the morning, everything worked.</p>
+
+<p>I couldn’t help but remember <em>Tom Knight and the Lisp Machine</em>:</p>
+
+<blockquote>
+  <p>A novice was trying to fix a broken Lisp machine by turning the power off and on.</p>
+
+  <p>Knight, seeing what the student was doing, spoke sternly: “You cannot fix a machine by just power-cycling it with no understanding of what is going wrong.”</p>
+
+  <p>Knight turned the machine off and on.</p>
+
+  <p>The machine worked.</p>
+</blockquote>
+
+
+
+      
+      
+      
+
+    </article>
+  
+    <article class="post">
+      <h1 class="post-title">
         <a href="/2014/04/27/removing-paperclip-attachments/">
           Removing Paperclip attachments
         </a>
@@ -200,48 +248,6 @@
 
     </article>
   
-    <article class="post">
-      <h1 class="post-title">
-        <a href="/2014/04/10/is-it-changed/">
-          Is it changed?
-        </a>
-      </h1>
-
-      <time datetime="2014-04-10T09:35:58+03:00" class="post-date">10 Apr 2014</time>
-
-      <p>Rails has some useful methods to check whether an object has changed since first being loaded into memory. Here are some examples:</p>
-
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">2.1.0 :001 &gt; <span class="nv">user</span> <span class="o">=</span> User.find<span class="o">(</span>1<span class="o">)</span>
- <span class="o">=</span>&gt; <span class="c">#&lt;User id: 1, name: &quot;Roderick&quot;, email: &quot;rod@example.com&quot;, created_at: ..., updated_at: ...&gt;</span>
-2.1.0 :002 &gt; user.name <span class="o">=</span> <span class="s1">&#39;Jimmy&#39;</span>
- <span class="o">=</span>&gt; <span class="s2">&quot;Jimmy&quot;</span>
-2.1.0 :003 &gt; user.changed?
- <span class="o">=</span>&gt; <span class="nb">true</span>
-2.1.0 :004 &gt; user.changed
- <span class="o">=</span>&gt; <span class="o">[</span><span class="s2">&quot;name&quot;</span><span class="o">]</span>
-2.1.0 :005 &gt; user.changes
- <span class="o">=</span>&gt; <span class="o">{</span><span class="s2">&quot;name&quot;</span><span class="o">=</span>&gt;<span class="o">[</span><span class="s2">&quot;Roderick&quot;</span>, <span class="s2">&quot;Jimmy&quot;</span><span class="o">]}</span>
-2.1.0 :006 &gt; user.name_changed?
- <span class="o">=</span>&gt; <span class="nb">true</span>
-2.1.0 :007 &gt; user.email_changed?
- <span class="o">=</span>&gt; <span class="nb">false</span>
-2.1.0 :008 &gt; user.name_was
- <span class="o">=</span>&gt; <span class="s2">&quot;Roderick&quot;</span>
-2.1.0 :009 &gt; user.save
- <span class="o">=</span>&gt; <span class="nb">true</span>
-2.1.0 :010 &gt; user.changed?
- <span class="o">=</span>&gt; <span class="nb">false</span></code></pre></div>
-
-<p>More info here: <a href="http://api.rubyonrails.org/classes/ActiveModel/Dirty.html">ActiveModel::Dirty</a>.</p>
-
-
-
-      
-      
-      
-
-    </article>
-  
 </div>
 
 <div class="pagination">
@@ -257,7 +263,7 @@
 
       <footer class="footer">
         <small>
-          &copy; <time datetime="2015-06-27T13:22:17+03:00">2015</time> Nikita Avvakumov.
+          &copy; <time datetime="2015-06-28T13:22:29+03:00">2015</time> Nikita Avvakumov.
           Happily made with <a href="http://demo.getpoole.com/">Poole</a>.
         </small>
       </footer>

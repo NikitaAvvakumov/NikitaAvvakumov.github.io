@@ -43,6 +43,38 @@
   
     <article class="post">
       <h1 class="post-title">
+        <a href="/2015/06/27/null-object/">
+          Empowering Null Objects in a Rails application
+        </a>
+      </h1>
+
+      <time datetime="2015-06-27T00:00:00+03:00" class="post-date">27 Jun 2015</time>
+
+      <p>Null Object is a well-known software design pattern that allows one to take advantage of
+duck-typing encouraged by Ruby. Plenty of articles offer good descriptions of
+this pattern and provide basic usage examples, which has prompted me to attempt
+integrating it into my Rails apps several times. Unfortunately, null objects
+always seemed to fall short of being able to fully replace nil checks and other
+conditionals. Luckily, Sandi Metz took a terriffic in-depth look at this pattern
+in a <a href="http://confreaks.tv/videos/railsconf2015-nothing-is-something">recent talk</a>.
+Inspired by this presentation, I returned to the Null Object pattern and finally
+implemented it in a way that unlocks its full potential while leaving the code
+base clean and compartmentalized.</p>
+
+
+
+      
+      
+      
+        <p>
+          <a class="btn btn-sm btn-primary" href="/2015/06/27/null-object//#read-more" role="button">Read more <i class="fa fa-arrow-circle-right"></i></a>
+        </p>
+      
+
+    </article>
+  
+    <article class="post">
+      <h1 class="post-title">
         <a href="/2015/06/11/selective-stubbing-of-method-calls-in-rspec/">
           Selective stubbing of method calls in RSpec
         </a>
@@ -171,30 +203,6 @@ variable? Suffer no more:</p>
 
     </article>
   
-    <article class="post">
-      <h1 class="post-title">
-        <a href="/2015/01/23/hash-%5B%5D/">
-          Hash[ ]
-        </a>
-      </h1>
-
-      <time datetime="2015-01-23T00:00:00+02:00" class="post-date">23 Jan 2015</time>
-
-      <p>Calling the <code>[]</code> method on Hash converts a one-dimensional array with an even number of elements into a hash, with odd/even elements alternating as keys/values. Very cool</p>
-
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="mi">2</span><span class="o">.</span><span class="mi">2</span><span class="o">.</span><span class="mi">0</span> <span class="p">:</span><span class="mo">001</span> <span class="o">&gt;</span> <span class="no">Hash</span><span class="o">[</span><span class="s1">&#39;key1&#39;</span><span class="p">,</span> <span class="s1">&#39;value1&#39;</span><span class="p">,</span> <span class="s1">&#39;key2&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="o">]</span>
- <span class="o">=&gt;</span> <span class="p">{</span><span class="s2">&quot;key1&quot;</span><span class="o">=&gt;</span><span class="s2">&quot;value1&quot;</span><span class="p">,</span> <span class="s2">&quot;key2&quot;</span><span class="o">=&gt;</span><span class="mi">5</span><span class="p">}</span>
-<span class="mi">2</span><span class="o">.</span><span class="mi">2</span><span class="o">.</span><span class="mi">0</span> <span class="p">:</span><span class="mo">002</span> <span class="o">&gt;</span> <span class="no">Hash</span><span class="o">[</span><span class="s1">&#39;k1&#39;</span><span class="p">,</span> <span class="s1">&#39;v1&#39;</span><span class="p">,</span> <span class="s1">&#39;k2&#39;</span><span class="o">]</span>
- <span class="o">=&gt;</span> <span class="ss">ArgumentError</span><span class="p">:</span> <span class="n">odd</span> <span class="n">number</span> <span class="n">of</span> <span class="n">arguments</span> <span class="k">for</span> <span class="no">Hash</span></code></pre></div>
-
-
-
-      
-      
-      
-
-    </article>
-  
 </div>
 
 <div class="pagination">
@@ -210,7 +218,7 @@ variable? Suffer no more:</p>
 
       <footer class="footer">
         <small>
-          &copy; <time datetime="2015-06-27T13:22:17+03:00">2015</time> Nikita Avvakumov.
+          &copy; <time datetime="2015-06-28T13:22:29+03:00">2015</time> Nikita Avvakumov.
           Happily made with <a href="http://demo.getpoole.com/">Poole</a>.
         </small>
       </footer>
