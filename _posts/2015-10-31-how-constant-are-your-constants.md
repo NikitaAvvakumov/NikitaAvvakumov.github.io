@@ -29,6 +29,8 @@ unfortunate, but at least it's clear what happened. In other cases, the change
 of a constant can take place by less obvious means and, to boot, without raising
 any warnings.
 
+<!--more-->
+
 {% highlight ruby %}
 :001 > CONST = [1, 2, 3]
  => [1, 2, 3]
