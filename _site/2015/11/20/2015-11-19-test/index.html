@@ -10,7 +10,7 @@
 
   <title>
     
-      .try &middot; Gemfile
+      Test of LSN Reviews &middot; Gemfile
     
   </title>
 
@@ -55,42 +55,11 @@
 
       <main>
         <article class="post">
-  <h1 class="post-title">.try</h1>
-  <time datetime="2014-03-26T07:44:43+02:00" class="post-date">26 Mar 2014</time>
-  <p>This Ruby method returns nil rather than raising an exception when called on a non-existent object.</p>
+  <h1 class="post-title">Test of LSN Reviews</h1>
+  <time datetime="2015-11-20T16:05:48+02:00" class="post-date">20 Nov 2015</time>
+  <p>Lorem ipsum dolor sit amet</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>rails console
-2.1.0 :001 &gt; nil.admin?
-NoMethodError: undefined method <span class="s1">&#39;admin?&#39;</span> <span class="k">for</span> nil:NilClass
-... stack trace ...
-2.1.0 :002 &gt; nil.try<span class="o">(</span>:admin<span class="o">)</span>
- <span class="o">=</span>&gt; nil</code></pre></div>
-
-<p>Here’s a practical example: Is the currently signed in user an admin? If so, he should see site admin links, otherwise they should be hidden:</p>
-
-<p><strong>any_view_file.html.erb:</strong></p>
-
-<div class="highlight"><pre><code class="language-erb" data-lang="erb"><span class="cp">&lt;%</span> <span class="k">if</span> <span class="n">current_user</span><span class="o">.</span><span class="n">admin?</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">  Show links</span>
-<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span></code></pre></div>
-
-<p>The above code breaks when the page is viewed by a non-signed-in visitor and <code>current_user</code> is not set (i.e. is nil).</p>
-
-<p>The <code>if</code> statement can be augmented to include two tests:</p>
-
-<div class="highlight"><pre><code class="language-erb" data-lang="erb"><span class="cp">&lt;%</span> <span class="k">if</span> <span class="n">current_user</span> <span class="o">&amp;&amp;</span> <span class="n">current_user</span><span class="o">.</span><span class="n">admin?</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">  Show links</span>
-<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span></code></pre></div>
-
-<p>Or the <code>try</code> method can be used to clean up the code:</p>
-
-<div class="highlight"><pre><code class="language-erb" data-lang="erb"><span class="cp">&lt;%</span> <span class="k">if</span> <span class="n">current_user</span><span class="o">.</span><span class="n">try</span><span class="p">(</span><span class="ss">:admin</span><span class="p">)</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">  Show links</span>
-<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span></code></pre></div>
-
-<p>The <code>if</code> statement will return <code>true</code> if the currently signed in user is an admin, <code>false</code> if he is not, and <code>nil</code> if there is no signed in user. Since <code>nil</code> is falsey, the admin links remain nicely hidden.</p>
-
-<p>(This approach merely cleans up the layout for unauthorized users. It should not be relied on to actually prevent unauthorized access to controller actions.)</p>
+<iframe src="http://localhost:3000/products/34?q=embed" frameborder="0" height="350" width="250">    </iframe>
 
 </article>
 
@@ -98,15 +67,6 @@ NoMethodError: undefined method <span class="s1">&#39;admin?&#39;</span> <span c
 <aside class="related">
   <h2>Related Posts</h2>
   <ul class="related-posts">
-    
-      <li>
-        <h3>
-          <a href="/2015/11/20/2015-11-19-test/">
-            Test of LSN Reviews
-            <small><time datetime="2015-11-20T16:05:48+02:00">20 Nov 2015</time></small>
-          </a>
-        </h3>
-      </li>
     
       <li>
         <h3>
@@ -122,6 +82,15 @@ NoMethodError: undefined method <span class="s1">&#39;admin?&#39;</span> <span c
           <a href="/2015/08/31/false-security-of-hash-fetch/">
             Don't let Hash#fetch give you a false sense of security
             <small><time datetime="2015-08-31T00:00:00+03:00">31 Aug 2015</time></small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2015/06/27/null-object/">
+            Empowering Null Objects in a Rails application
+            <small><time datetime="2015-06-27T00:00:00+03:00">27 Jun 2015</time></small>
           </a>
         </h3>
       </li>

@@ -10,7 +10,7 @@
 
   <title>
     
-      .try &middot; Gemfile
+      Gemfile &middot; I codes and I blogs
     
   </title>
 
@@ -54,10 +54,18 @@
       </header>
 
       <main>
-        <article class="post">
-  <h1 class="post-title">.try</h1>
-  <time datetime="2014-03-26T07:44:43+02:00" class="post-date">26 Mar 2014</time>
-  <p>This Ruby method returns nil rather than raising an exception when called on a non-existent object.</p>
+        <div class="posts">
+  
+    <article class="post">
+      <h1 class="post-title">
+        <a href="/2014/03/26/try/">
+          .try
+        </a>
+      </h1>
+
+      <time datetime="2014-03-26T07:44:43+02:00" class="post-date">26 Mar 2014</time>
+
+      <p>This Ruby method returns nil rather than raising an exception when called on a non-existent object.</p>
 
 <div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>rails console
 2.1.0 :001 &gt; nil.admin?
@@ -92,58 +100,84 @@ NoMethodError: undefined method <span class="s1">&#39;admin?&#39;</span> <span c
 
 <p>(This approach merely cleans up the layout for unauthorized users. It should not be relied on to actually prevent unauthorized access to controller actions.)</p>
 
-</article>
 
 
-<aside class="related">
-  <h2>Related Posts</h2>
-  <ul class="related-posts">
-    
-      <li>
-        <h3>
-          <a href="/2015/11/20/2015-11-19-test/">
-            Test of LSN Reviews
-            <small><time datetime="2015-11-20T16:05:48+02:00">20 Nov 2015</time></small>
-          </a>
-        </h3>
-      </li>
-    
-      <li>
-        <h3>
-          <a href="/2015/10/31/how-constant-are-your-constants/">
-            How constant are your constants?
-            <small><time datetime="2015-10-31T00:00:00+02:00">31 Oct 2015</time></small>
-          </a>
-        </h3>
-      </li>
-    
-      <li>
-        <h3>
-          <a href="/2015/08/31/false-security-of-hash-fetch/">
-            Don't let Hash#fetch give you a false sense of security
-            <small><time datetime="2015-08-31T00:00:00+03:00">31 Aug 2015</time></small>
-          </a>
-        </h3>
-      </li>
-    
-  </ul>
-</aside>
+      
+      
+      
+
+    </article>
+  
+    <article class="post">
+      <h1 class="post-title">
+        <a href="/2014/03/13/nuking-all-changes-with-git/">
+          Nuking all changes with Git
+        </a>
+      </h1>
+
+      <time datetime="2014-03-13T15:19:44+02:00" class="post-date">13 Mar 2014</time>
+
+      <p>After looking it up twice in one (less than productive) day…</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>git reset --hard <span class="c"># delete all changes from tracked files</span>
+<span class="nv">$ </span>git clean -f -d <span class="c"># remove untracked files and directories</span></code></pre></div>
+
+<p><em>(Warning: This is destructive! Code will be irreversibly lost.)</em></p>
+
+<p>An alternative to doing the above would be:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>git add .
+<span class="nv">$ </span>git reset --hard</code></pre></div>
+
+<p>And if things aren’t a complete disaster that deserves to be annihilated - for example, perhaps they can serve as a stern reminder in the future - they can be saved prior to destruction with</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>git diff &gt; ~/lessons_learned/rails_mess_1.diff</code></pre></div>
 
 
-<div id="disqus_thread"></div>
-<script type="text/javascript">
-    /* * * CONFIGURATION VARIABLES * * */
-    var disqus_shortname = 'nikitaavvakumov';
 
-    /* * * DON'T EDIT BELOW THIS LINE * * */
-    (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+      
+      
+      
 
+    </article>
+  
+    <article class="post">
+      <h1 class="post-title">
+        <a href="/2014/03/13/enjoy-your-day-of-the-week/">
+          Enjoy your day-of-the-week :)
+        </a>
+      </h1>
+
+      <time datetime="2014-03-13T10:27:21+02:00" class="post-date">13 Mar 2014</time>
+
+      <p>Simple:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>rails console
+2.1.0 :001 &gt; Time.now.wday
+  <span class="o">=</span>&gt; <span class="m">4</span>   <span class="c">#Thursday</span>
+2.1.0 :002 &gt; Date::DAYNAMES
+  <span class="o">=</span>&gt; <span class="o">[</span><span class="s2">&quot;Sunday&quot;</span>, <span class="s2">&quot;Monday&quot;</span>, <span class="s2">&quot;Tuesday&quot;</span>, <span class="s2">&quot;Wednesday&quot;</span>, <span class="s2">&quot;Thursday&quot;</span>, <span class="s2">&quot;Friday&quot;</span>, <span class="s2">&quot;Saturday&quot;</span><span class="o">]</span>
+2.1.0 :003 &gt; <span class="s2">&quot;Enjoy your #{Date::DAYNAMES[Time.now.wday]}.&quot;</span>
+  <span class="o">=</span>&gt; <span class="s2">&quot;Enjoy your Thursday.&quot;</span></code></pre></div>
+
+
+
+      
+      
+      
+
+    </article>
+  
+</div>
+
+<div class="pagination">
+  
+    <span class="pagination-item older">Older</span>
+  
+  
+    <a class="pagination-item newer" href="/page4">Newer</a>
+  
+</div>
 
       </main>
 

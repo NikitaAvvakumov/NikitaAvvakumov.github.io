@@ -58,6 +58,124 @@
   
     <article class="post">
       <h1 class="post-title">
+        <a href="/2014/04/27/paperclip-attachments-in-factories/">
+          Paperclip attachments in RSpec factories
+        </a>
+      </h1>
+
+      <time datetime="2014-04-27T12:11:46+03:00" class="post-date">27 Apr 2014</time>
+
+      <p>Assuming one has a model whose attachments are handled by Paperclip, i.e.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>rails generate paperclip user photo</code></pre></div>
+
+<p><strong>app/models/user.rb:</strong></p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">User</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+  <span class="n">has_attached_file</span> <span class="ss">:photo</span>
+<span class="k">end</span></code></pre></div>
+
+<p>then to generate a test model with FactoryGirl, including the attachment:</p>
+
+<p><strong>spec/factories/user_factory.rb:</strong></p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="kp">include</span> <span class="no">ActionDispatch</span><span class="o">::</span><span class="no">TestProcess</span>
+<span class="no">FactoryGirl</span><span class="o">.</span><span class="n">define</span> <span class="k">do</span>
+  <span class="n">factory</span> <span class="ss">:user</span> <span class="k">do</span>
+    <span class="nb">name</span> <span class="s1">&#39;Sample User&#39;</span>
+    <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+    <span class="n">photo</span> <span class="p">{</span> <span class="n">fixture_file_upload</span><span class="p">(</span><span class="no">Rails</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;spec/fixtures/test_img.png&#39;</span><span class="p">),</span> <span class="s1">&#39;image/png&#39;</span><span class="p">)</span> <span class="p">}</span>
+  <span class="k">end</span>
+<span class="k">end</span></code></pre></div>
+
+<p>Various manipulations of the attached image through the web interface can then be tested with RSpec and Capybara.</p>
+
+
+
+      
+      
+      
+
+    </article>
+  
+    <article class="post">
+      <h1 class="post-title">
+        <a href="/2014/04/27/testing-images-with-rspec/">
+          Testing images with RSpec
+        </a>
+      </h1>
+
+      <time datetime="2014-04-27T11:58:38+03:00" class="post-date">27 Apr 2014</time>
+
+      <p>To test whether the right image is displayed on a page:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">expect</span><span class="p">(</span><span class="n">page</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">have_css</span><span class="p">(</span><span class="s2">&quot;img[src*=&#39;image_name.png&#39;]&quot;</span><span class="p">)</span></code></pre></div>
+
+<p>i.e. “Expect page to have an <code>&lt;img&gt;</code> tag whose <code>src</code> attribute contains the name of the required image.”</p>
+
+
+
+      
+      
+      
+
+    </article>
+  
+    <article class="post">
+      <h1 class="post-title">
+        <a href="/2014/04/17/delegate-your-model-methods/">
+          Learn to delegate (your model methods)
+        </a>
+      </h1>
+
+      <time datetime="2014-04-17T16:10:42+03:00" class="post-date">17 Apr 2014</time>
+
+      <p><code>delegate</code> is neat trick that allows one to write cleaner, neater code. Particularly when dealing with ActiveRecord associations, <code>delegate</code> makes it possible to “outsource” a method to an associated object.</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Book</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+  <span class="c1"># has attribute &#39;author&#39;</span>
+<span class="k">end</span>
+
+<span class="k">class</span> <span class="nc">Chapter</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+  <span class="n">belongs_to</span> <span class="ss">:book</span>
+  <span class="n">delegate</span> <span class="ss">:author</span><span class="p">,</span> <span class="ss">to</span><span class="p">:</span> <span class="ss">:book</span>
+<span class="k">end</span></code></pre></div>
+
+<p>Without <code>delegate</code>, when dealing with a <code>Chapter</code> object, you’d need to access the book’s author via <code>chapter.book.author</code>. With delegation, this can be neatly shortened to <code>chapter.author</code>, with the <code>.author</code> getting handed off to the associated <code>Book</code> object.</p>
+
+<p>An object can delegate multiple methods to its association, as shown in the example below. Another handy option is to use <em>prefixes</em> with <code>delegate</code>. For instance, using the same approach as above to refer to the book’s title would create <code>chapter.title</code>, which is confusing. With prefixes, however:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Chapter</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+  <span class="n">belongs_to</span> <span class="ss">:book</span>
+  <span class="n">delegate</span> <span class="ss">:author</span><span class="p">,</span> <span class="ss">:title</span><span class="p">,</span> <span class="ss">to</span><span class="p">:</span> <span class="ss">:book</span><span class="p">,</span> <span class="ss">prefix</span><span class="p">:</span> <span class="kp">true</span>
+<span class="k">end</span>
+
+<span class="n">chapter</span><span class="o">.</span><span class="n">book_title</span>   <span class="c1"># returns book&#39;s title</span>
+<span class="n">chapter</span><span class="o">.</span><span class="n">book_author</span>  <span class="c1"># returns book&#39;s author</span></code></pre></div>
+
+<p>(Of course, if chapters had their own titles, the above code would make them inaccessible, but that’s what you get with contrived examples. See <a href="http://pivotallabs.com/rails-delegates-are-even-more-useful-than-i-knew/">this post</a> on the Pivotal Labs’ blog for a solution.)</p>
+
+<p>One final tidbit to touch upon is that <code>delegate</code> is not limited to deliberately created methods and attributes but extends equally well to those created behind the scenes by the association:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Quote</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+  <span class="n">belongs_to</span> <span class="ss">:chapter</span>
+  <span class="n">delegate</span> <span class="ss">:book</span><span class="p">,</span> <span class="ss">to</span><span class="p">:</span> <span class="ss">:chapter</span>
+<span class="k">end</span>
+
+<span class="n">quote</span><span class="o">.</span><span class="n">book</span>  <span class="c1"># returns the book object associated with the chapter to which the quote belongs</span></code></pre></div>
+
+<p>For more on <code>delegate</code>, including custom prefixes and how to handle NoMethodErrors, see the <a href="http://apidock.com/rails/Module/delegate">API Docs</a>.</p>
+
+
+
+      
+      
+      
+
+    </article>
+  
+    <article class="post">
+      <h1 class="post-title">
         <a href="/2014/04/10/is-it-changed/">
           Is it changed?
         </a>
@@ -150,123 +268,11 @@ The not-so-subtle difference between <code>do..end</code> and <code>{}</code> is
 
     </article>
   
-    <article class="post">
-      <h1 class="post-title">
-        <a href="/2014/03/26/try/">
-          .try
-        </a>
-      </h1>
-
-      <time datetime="2014-03-26T07:44:43+02:00" class="post-date">26 Mar 2014</time>
-
-      <p>This Ruby method returns nil rather than raising an exception when called on a non-existent object.</p>
-
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>rails console
-2.1.0 :001 &gt; nil.admin?
-NoMethodError: undefined method <span class="s1">&#39;admin?&#39;</span> <span class="k">for</span> nil:NilClass
-... stack trace ...
-2.1.0 :002 &gt; nil.try<span class="o">(</span>:admin<span class="o">)</span>
- <span class="o">=</span>&gt; nil</code></pre></div>
-
-<p>Here’s a practical example: Is the currently signed in user an admin? If so, he should see site admin links, otherwise they should be hidden:</p>
-
-<p><strong>any_view_file.html.erb:</strong></p>
-
-<div class="highlight"><pre><code class="language-erb" data-lang="erb"><span class="cp">&lt;%</span> <span class="k">if</span> <span class="n">current_user</span><span class="o">.</span><span class="n">admin?</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">  Show links</span>
-<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span></code></pre></div>
-
-<p>The above code breaks when the page is viewed by a non-signed-in visitor and <code>current_user</code> is not set (i.e. is nil).</p>
-
-<p>The <code>if</code> statement can be augmented to include two tests:</p>
-
-<div class="highlight"><pre><code class="language-erb" data-lang="erb"><span class="cp">&lt;%</span> <span class="k">if</span> <span class="n">current_user</span> <span class="o">&amp;&amp;</span> <span class="n">current_user</span><span class="o">.</span><span class="n">admin?</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">  Show links</span>
-<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span></code></pre></div>
-
-<p>Or the <code>try</code> method can be used to clean up the code:</p>
-
-<div class="highlight"><pre><code class="language-erb" data-lang="erb"><span class="cp">&lt;%</span> <span class="k">if</span> <span class="n">current_user</span><span class="o">.</span><span class="n">try</span><span class="p">(</span><span class="ss">:admin</span><span class="p">)</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">  Show links</span>
-<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span></code></pre></div>
-
-<p>The <code>if</code> statement will return <code>true</code> if the currently signed in user is an admin, <code>false</code> if he is not, and <code>nil</code> if there is no signed in user. Since <code>nil</code> is falsey, the admin links remain nicely hidden.</p>
-
-<p>(This approach merely cleans up the layout for unauthorized users. It should not be relied on to actually prevent unauthorized access to controller actions.)</p>
-
-
-
-      
-      
-      
-
-    </article>
-  
-    <article class="post">
-      <h1 class="post-title">
-        <a href="/2014/03/13/nuking-all-changes-with-git/">
-          Nuking all changes with Git
-        </a>
-      </h1>
-
-      <time datetime="2014-03-13T15:19:44+02:00" class="post-date">13 Mar 2014</time>
-
-      <p>After looking it up twice in one (less than productive) day…</p>
-
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>git reset --hard <span class="c"># delete all changes from tracked files</span>
-<span class="nv">$ </span>git clean -f -d <span class="c"># remove untracked files and directories</span></code></pre></div>
-
-<p><em>(Warning: This is destructive! Code will be irreversibly lost.)</em></p>
-
-<p>An alternative to doing the above would be:</p>
-
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>git add .
-<span class="nv">$ </span>git reset --hard</code></pre></div>
-
-<p>And if things aren’t a complete disaster that deserves to be annihilated - for example, perhaps they can serve as a stern reminder in the future - they can be saved prior to destruction with</p>
-
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>git diff &gt; ~/lessons_learned/rails_mess_1.diff</code></pre></div>
-
-
-
-      
-      
-      
-
-    </article>
-  
-    <article class="post">
-      <h1 class="post-title">
-        <a href="/2014/03/13/enjoy-your-day-of-the-week/">
-          Enjoy your day-of-the-week :)
-        </a>
-      </h1>
-
-      <time datetime="2014-03-13T10:27:21+02:00" class="post-date">13 Mar 2014</time>
-
-      <p>Simple:</p>
-
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>rails console
-2.1.0 :001 &gt; Time.now.wday
-  <span class="o">=</span>&gt; <span class="m">4</span>   <span class="c">#Thursday</span>
-2.1.0 :002 &gt; Date::DAYNAMES
-  <span class="o">=</span>&gt; <span class="o">[</span><span class="s2">&quot;Sunday&quot;</span>, <span class="s2">&quot;Monday&quot;</span>, <span class="s2">&quot;Tuesday&quot;</span>, <span class="s2">&quot;Wednesday&quot;</span>, <span class="s2">&quot;Thursday&quot;</span>, <span class="s2">&quot;Friday&quot;</span>, <span class="s2">&quot;Saturday&quot;</span><span class="o">]</span>
-2.1.0 :003 &gt; <span class="s2">&quot;Enjoy your #{Date::DAYNAMES[Time.now.wday]}.&quot;</span>
-  <span class="o">=</span>&gt; <span class="s2">&quot;Enjoy your Thursday.&quot;</span></code></pre></div>
-
-
-
-      
-      
-      
-
-    </article>
-  
 </div>
 
 <div class="pagination">
   
-    <span class="pagination-item older">Older</span>
+    <a class="pagination-item older" href="/page5">Older</a>
   
   
     <a class="pagination-item newer" href="/page3">Newer</a>
@@ -277,7 +283,7 @@ NoMethodError: undefined method <span class="s1">&#39;admin?&#39;</span> <span c
 
       <footer class="footer">
         <small>
-          &copy; <time datetime="2015-06-29T22:50:30+03:00">2015</time> Nikita Avvakumov.
+          &copy; <time datetime="2015-11-20T16:05:55+02:00">2015</time> Nikita Avvakumov.
           Happily made with <a href="http://demo.getpoole.com/">Poole</a>.
         </small>
       </footer>

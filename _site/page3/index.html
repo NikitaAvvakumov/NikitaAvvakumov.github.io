@@ -58,6 +58,138 @@
   
     <article class="post">
       <h1 class="post-title">
+        <a href="/2014/08/20/date-in-ruby-vs-rails/">
+          Using Date - Ruby vs. Rails
+        </a>
+      </h1>
+
+      <time datetime="2014-08-20T00:00:00+03:00" class="post-date">20 Aug 2014</time>
+
+      <p>This little investigation was prompted by an interesting quirk whereby <code>Date.today == Date.tomorrow</code> returned <code>true</code>.</p>
+
+<p><code>Date.today</code> is implemented in Ruby and uses system’s local time &amp; timezone.</p>
+
+<p>In Rails, timezone can be set in <strong>config/application.rb</strong> but defaults to UTC. Thus, it can be different that local system time used by Ruby.</p>
+
+<p><code>Date.tomorrow</code> &amp; <code>Date.yesterday</code> are implemented in Rails and use <code>Date.current</code> internally.</p>
+
+<p><code>Date.current</code> is implemented in Rails thus:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="o">::</span><span class="no">Time</span><span class="o">.</span><span class="n">zone</span> <span class="p">?</span> <span class="o">::</span><span class="no">Time</span><span class="o">.</span><span class="n">zone</span><span class="o">.</span><span class="n">today</span> <span class="p">:</span> <span class="o">::</span><span class="no">Date</span><span class="o">.</span><span class="n">today</span></code></pre></div>
+
+<p>i.e. if <code>Time.zone</code> is set (which in Rails it is, as stated above), <code>Date.current</code>, <code>Date.tomorrow</code> &amp; <code>Date.yesterday</code> will use <code>Time.zone.today</code>. If it’s not set, which never happens in Rails, then the methods fall back to the timezone-unaware Ruby implementation.</p>
+
+<p>The solution to avoiding issues related to all this in Rails is to use the Rails implementations based on <code>Date.current</code> and avoid using Ruby’s <code>Date.today</code>.</p>
+
+
+
+      
+      
+      
+
+    </article>
+  
+    <article class="post">
+      <h1 class="post-title">
+        <a href="/2014/08/18/block-given/">
+          block_given?
+        </a>
+      </h1>
+
+      <time datetime="2014-08-18T00:00:00+03:00" class="post-date">18 Aug 2014</time>
+
+      <p>A method of the Kernel module, and thus available everywhere in Ruby, <code>block_given?</code> allows you to check whether a block was passed as an argument to a function.</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">new_func</span>
+  <span class="k">if</span> <span class="nb">block_given?</span>
+    <span class="k">yield</span>
+  <span class="k">else</span>
+    <span class="s1">&#39;No block!&#39;</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="n">new_func</span>    
+<span class="c1"># =&gt; &quot;No block!&quot;</span>
+<span class="n">new_func</span> <span class="p">{</span> <span class="s1">&#39;In the block!&#39;</span> <span class="p">}</span>
+<span class="c1"># =&gt; &quot;In the block!&quot;</span></code></pre></div>
+
+<p>Here’s a less contrived example, which came out of my solution to a problem on <a href="http://rubymonk.com/learning/books/1-ruby-primer/problems/156-sum">RubyMonk</a>:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">MyArray</span>
+  <span class="kp">attr_reader</span> <span class="ss">:array</span>
+
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">array</span><span class="p">)</span>
+    <span class="vi">@array</span> <span class="o">=</span> <span class="n">array</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">sum</span><span class="p">(</span><span class="n">initial_value</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="c1"># your code here</span>
+    <span class="vi">@array</span><span class="o">.</span><span class="n">inject</span><span class="p">(</span><span class="n">initial_value</span><span class="p">){</span> <span class="o">|</span><span class="n">sum</span><span class="p">,</span> <span class="n">n</span><span class="o">|</span> <span class="n">sum</span> <span class="o">+=</span> <span class="p">(</span><span class="nb">block_given?</span> <span class="p">?</span> <span class="k">yield</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="p">:</span> <span class="n">n</span><span class="p">)</span> <span class="p">}</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="n">my_array</span> <span class="o">=</span> <span class="no">MyArray</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="o">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="o">]</span><span class="p">)</span>
+<span class="n">my_array</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="c1"># =&gt; 16 (10 + 1 + 2 + 3)</span>
+<span class="n">my_array</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="p">{</span><span class="o">|</span><span class="n">n</span><span class="o">|</span> <span class="n">n</span> <span class="o">**</span> <span class="mi">2</span> <span class="p">}</span>
+<span class="c1"># =&gt; 14 (1**2 + 2**2 + 3**2)</span></code></pre></div>
+
+<p>Without a block argument, the method simply adds array elements to a specified initial value. When a block is passed, each array element is first yielded to the block (which squares the element in the example) and <em>then</em> summed.</p>
+
+
+
+      
+      
+      
+
+    </article>
+  
+    <article class="post">
+      <h1 class="post-title">
+        <a href="/2014/06/18/rspec-3-0-1-rubymine/">
+          RSpec 3.0.1 and RubyMine
+        </a>
+      </h1>
+
+      <time datetime="2014-06-18T08:15:28+03:00" class="post-date">18 Jun 2014</time>
+
+      <p>After the recent RSpec update, warnings started showing up in RubyMine:</p>
+
+<blockquote>
+  <p>Deprecation Warnings: Treating <code>metadata[:execution_result]</code> as a hash is deprecated. Use the attributes methods to access the data instead. Called from …/teamcity/rspec3_formatter.rb: line#</p>
+</blockquote>
+
+<p>(So, RSpec is complaining that RubyMine’s formatter is not accessing its data properly?) The warnings were overwhelming to the point of obscuring the results of running the test. Simple fix:</p>
+
+<ol>
+  <li>
+    <p>open <strong>/Applications/RubyMine.app/rb/testing/patch/bdd/teamcity/spec/runner/formatter/teamcity/rspec3_formatter.rb</strong> by clicking on one of the links in the warning message</p>
+  </li>
+  <li>
+    <p>this takes you right to the offending lines (#135, 333 &amp; 340 in my version), wherein, as per the message’s instructions, the hash format</p>
+  </li>
+</ol>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">started_at_ms</span> <span class="o">=</span> <span class="n">get_time_in_ms</span><span class="p">(</span><span class="n">example</span><span class="o">.</span><span class="n">execution_result</span><span class="o">[</span><span class="ss">:started_at</span><span class="o">]</span><span class="p">)</span></code></pre></div>
+
+<p>needs to be changed to an attribute accessor</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">started_at_ms</span> <span class="o">=</span> <span class="n">get_time_in_ms</span><span class="p">(</span><span class="n">example</span><span class="o">.</span><span class="n">execution_result</span><span class="o">.</span><span class="n">started_at</span><span class="p">)</span></code></pre></div>
+
+<p>No more warnings :)</p>
+
+<p>(In the process, I also learned that while <strong>File &gt; Open Recent</strong> works to reopen <em>projects</em>, <strong>View &gt; Recent Files</strong> (or <code>⌘-E</code>) is for recently closed <em>files</em>.)</p>
+
+
+
+      
+      
+      
+
+    </article>
+  
+    <article class="post">
+      <h1 class="post-title">
         <a href="/2014/06/13/the-rails-machine/">
           The Rails Machine
         </a>
@@ -145,124 +277,6 @@ In the morning, everything worked.</p>
 
     </article>
   
-    <article class="post">
-      <h1 class="post-title">
-        <a href="/2014/04/27/paperclip-attachments-in-factories/">
-          Paperclip attachments in RSpec factories
-        </a>
-      </h1>
-
-      <time datetime="2014-04-27T12:11:46+03:00" class="post-date">27 Apr 2014</time>
-
-      <p>Assuming one has a model whose attachments are handled by Paperclip, i.e.</p>
-
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>rails generate paperclip user photo</code></pre></div>
-
-<p><strong>app/models/user.rb:</strong></p>
-
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">User</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
-  <span class="n">has_attached_file</span> <span class="ss">:photo</span>
-<span class="k">end</span></code></pre></div>
-
-<p>then to generate a test model with FactoryGirl, including the attachment:</p>
-
-<p><strong>spec/factories/user_factory.rb:</strong></p>
-
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="kp">include</span> <span class="no">ActionDispatch</span><span class="o">::</span><span class="no">TestProcess</span>
-<span class="no">FactoryGirl</span><span class="o">.</span><span class="n">define</span> <span class="k">do</span>
-  <span class="n">factory</span> <span class="ss">:user</span> <span class="k">do</span>
-    <span class="nb">name</span> <span class="s1">&#39;Sample User&#39;</span>
-    <span class="o">.</span><span class="n">.</span><span class="o">.</span>
-    <span class="n">photo</span> <span class="p">{</span> <span class="n">fixture_file_upload</span><span class="p">(</span><span class="no">Rails</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;spec/fixtures/test_img.png&#39;</span><span class="p">),</span> <span class="s1">&#39;image/png&#39;</span><span class="p">)</span> <span class="p">}</span>
-  <span class="k">end</span>
-<span class="k">end</span></code></pre></div>
-
-<p>Various manipulations of the attached image through the web interface can then be tested with RSpec and Capybara.</p>
-
-
-
-      
-      
-      
-
-    </article>
-  
-    <article class="post">
-      <h1 class="post-title">
-        <a href="/2014/04/27/testing-images-with-rspec/">
-          Testing images with RSpec
-        </a>
-      </h1>
-
-      <time datetime="2014-04-27T11:58:38+03:00" class="post-date">27 Apr 2014</time>
-
-      <p>To test whether the right image is displayed on a page:</p>
-
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">expect</span><span class="p">(</span><span class="n">page</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">have_css</span><span class="p">(</span><span class="s2">&quot;img[src*=&#39;image_name.png&#39;]&quot;</span><span class="p">)</span></code></pre></div>
-
-<p>i.e. “Expect page to have an <code>&lt;img&gt;</code> tag whose <code>src</code> attribute contains the name of the required image.”</p>
-
-
-
-      
-      
-      
-
-    </article>
-  
-    <article class="post">
-      <h1 class="post-title">
-        <a href="/2014/04/17/delegate-your-model-methods/">
-          Learn to delegate (your model methods)
-        </a>
-      </h1>
-
-      <time datetime="2014-04-17T16:10:42+03:00" class="post-date">17 Apr 2014</time>
-
-      <p><code>delegate</code> is neat trick that allows one to write cleaner, neater code. Particularly when dealing with ActiveRecord associations, <code>delegate</code> makes it possible to “outsource” a method to an associated object.</p>
-
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Book</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
-  <span class="c1"># has attribute &#39;author&#39;</span>
-<span class="k">end</span>
-
-<span class="k">class</span> <span class="nc">Chapter</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
-  <span class="n">belongs_to</span> <span class="ss">:book</span>
-  <span class="n">delegate</span> <span class="ss">:author</span><span class="p">,</span> <span class="ss">to</span><span class="p">:</span> <span class="ss">:book</span>
-<span class="k">end</span></code></pre></div>
-
-<p>Without <code>delegate</code>, when dealing with a <code>Chapter</code> object, you’d need to access the book’s author via <code>chapter.book.author</code>. With delegation, this can be neatly shortened to <code>chapter.author</code>, with the <code>.author</code> getting handed off to the associated <code>Book</code> object.</p>
-
-<p>An object can delegate multiple methods to its association, as shown in the example below. Another handy option is to use <em>prefixes</em> with <code>delegate</code>. For instance, using the same approach as above to refer to the book’s title would create <code>chapter.title</code>, which is confusing. With prefixes, however:</p>
-
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Chapter</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
-  <span class="n">belongs_to</span> <span class="ss">:book</span>
-  <span class="n">delegate</span> <span class="ss">:author</span><span class="p">,</span> <span class="ss">:title</span><span class="p">,</span> <span class="ss">to</span><span class="p">:</span> <span class="ss">:book</span><span class="p">,</span> <span class="ss">prefix</span><span class="p">:</span> <span class="kp">true</span>
-<span class="k">end</span>
-
-<span class="n">chapter</span><span class="o">.</span><span class="n">book_title</span>   <span class="c1"># returns book&#39;s title</span>
-<span class="n">chapter</span><span class="o">.</span><span class="n">book_author</span>  <span class="c1"># returns book&#39;s author</span></code></pre></div>
-
-<p>(Of course, if chapters had their own titles, the above code would make them inaccessible, but that’s what you get with contrived examples. See <a href="http://pivotallabs.com/rails-delegates-are-even-more-useful-than-i-knew/">this post</a> on the Pivotal Labs’ blog for a solution.)</p>
-
-<p>One final tidbit to touch upon is that <code>delegate</code> is not limited to deliberately created methods and attributes but extends equally well to those created behind the scenes by the association:</p>
-
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Quote</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
-  <span class="n">belongs_to</span> <span class="ss">:chapter</span>
-  <span class="n">delegate</span> <span class="ss">:book</span><span class="p">,</span> <span class="ss">to</span><span class="p">:</span> <span class="ss">:chapter</span>
-<span class="k">end</span>
-
-<span class="n">quote</span><span class="o">.</span><span class="n">book</span>  <span class="c1"># returns the book object associated with the chapter to which the quote belongs</span></code></pre></div>
-
-<p>For more on <code>delegate</code>, including custom prefixes and how to handle NoMethodErrors, see the <a href="http://apidock.com/rails/Module/delegate">API Docs</a>.</p>
-
-
-
-      
-      
-      
-
-    </article>
-  
 </div>
 
 <div class="pagination">
@@ -278,7 +292,7 @@ In the morning, everything worked.</p>
 
       <footer class="footer">
         <small>
-          &copy; <time datetime="2015-06-29T22:50:30+03:00">2015</time> Nikita Avvakumov.
+          &copy; <time datetime="2015-11-20T16:05:55+02:00">2015</time> Nikita Avvakumov.
           Happily made with <a href="http://demo.getpoole.com/">Poole</a>.
         </small>
       </footer>

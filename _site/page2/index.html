@@ -58,6 +58,104 @@
   
     <article class="post">
       <h1 class="post-title">
+        <a href="/2015/06/11/euro-pound-dollar-yen-ruble/">
+          € £ $ ¥ ₽
+        </a>
+      </h1>
+
+      <time datetime="2015-06-11T00:00:00+03:00" class="post-date">11 Jun 2015</time>
+
+      <p>Thanks to Stack Overflow’s <a href="http://stackoverflow.com/research/developer-survey-2015">annual survey</a>, we now have this gem (pun intended) of data:</p>
+
+<p><a href="http://stackoverflow.com/research/developer-survey-2015#work-complang"><img src="https://gemfile.files.wordpress.com/2015/06/screen-shot-2015-06-11-at-9-38-02-am.png" alt="US compensation" /></a>
+<a href="http://stackoverflow.com/research/developer-survey-2015#work-complang"><img src="https://gemfile.files.wordpress.com/2015/06/screen-shot-2015-06-11-at-9-39-20-am.png" alt="Eastern Europe compensation" /></a></p>
+
+<p>Is this as absurd as it appears? Let’s take a closer look.</p>
+
+
+
+      
+      
+      
+        <p>
+          <a class="btn btn-sm btn-primary" href="/2015/06/11/euro-pound-dollar-yen-ruble//#read-more" role="button">Read more <i class="fa fa-arrow-circle-right"></i></a>
+        </p>
+      
+
+    </article>
+  
+    <article class="post">
+      <h1 class="post-title">
+        <a href="/2015/04/18/git-hooks-ctags-and-rails/">
+          git hooks, Ctags & Rails
+        </a>
+      </h1>
+
+      <time datetime="2015-04-18T00:00:00+03:00" class="post-date">18 Apr 2015</time>
+
+      <p>Small adjustment to Tim Pope’s outstanding <a href="http://tbaggery.com/2011/08/08/effortless-ctags-with-git.html">Effortless Ctags with Git</a>:</p>
+
+<p>To get ctags to also index all bundled gems (including Rails), make the following change to the <code>ctags</code> hook</p>
+
+<p>Replace</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">git ls-files <span class="p">|</span> <span class="se">\</span>
+  ctags --tag-relative -L - -f<span class="s2">&quot;$dir/$$.tags&quot;</span> --languages<span class="o">=</span>-javascript,sql</code></pre></div>
+
+<p>with</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">ctags --recurse --tag-relative -f<span class="s2">&quot;$dir/$$.tags&quot;</span> --languages<span class="o">=</span>-javascript,sql <span class="sb">`</span>bundle show --paths<span class="sb">`</span> <span class="sb">`</span>git ls-files<span class="sb">`</span></code></pre></div>
+
+<p>After triggering the hook, the <code>tags</code> file takes a few seconds to generate in the background - have patience :)</p>
+
+
+
+      
+      
+      
+
+    </article>
+  
+    <article class="post">
+      <h1 class="post-title">
+        <a href="/2015/02/15/_/">
+          _
+        </a>
+      </h1>
+
+      <time datetime="2015-02-15T00:00:00+02:00" class="post-date">15 Feb 2015</time>
+
+      <p>That nondescript title is not a placeholder - this post is really about the
+underscore. It arose out of one of those rewarding moments where you suddenly
+feel that there must be a way to do something better, and a search quickly
+reveals that, indeed, there is.</p>
+
+<p>Ever evaluate a complex - particularly multi-line - expression in irb or
+Rails console and immediately after hitting the
+Return key realize that you’ve neglected to assign the return value to a
+variable? Suffer no more:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="mi">2</span><span class="o">.</span><span class="mi">2</span><span class="o">.</span><span class="mi">0</span> <span class="p">:</span><span class="mo">001</span> <span class="o">&gt;</span> <span class="o">[[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="o">]</span><span class="p">,</span> <span class="o">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="o">]].</span><span class="n">map</span> <span class="k">do</span> <span class="o">|</span><span class="n">pair</span><span class="o">|</span>
+<span class="mi">2</span><span class="o">.</span><span class="mi">2</span><span class="o">.</span><span class="mi">0</span> <span class="p">:</span><span class="mo">002</span> <span class="o">&gt;</span>   <span class="n">pair</span><span class="o">[</span><span class="mi">0</span><span class="o">]*</span><span class="mi">2</span> <span class="o">+</span> <span class="n">pair</span><span class="o">[</span><span class="mi">1</span><span class="o">]*</span><span class="mi">3</span>
+<span class="mi">2</span><span class="o">.</span><span class="mi">2</span><span class="o">.</span><span class="mi">0</span> <span class="p">:</span><span class="mo">003</span> <span class="o">&gt;</span> <span class="k">end</span>
+<span class="o">=&gt;</span> <span class="o">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">18</span><span class="o">]</span>
+<span class="mi">2</span><span class="o">.</span><span class="mi">2</span><span class="o">.</span><span class="mi">0</span> <span class="p">:</span><span class="mo">004</span> <span class="o">&gt;</span> <span class="n">_</span>
+<span class="o">=&gt;</span> <span class="o">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">18</span><span class="o">]</span>
+<span class="mi">2</span><span class="o">.</span><span class="mi">2</span><span class="o">.</span><span class="mi">0</span> <span class="p">:</span><span class="mo">005</span> <span class="o">&gt;</span> <span class="n">_</span><span class="o">.</span><span class="n">map</span> <span class="p">{</span> <span class="o">|</span><span class="n">c</span><span class="o">|</span> <span class="n">c</span><span class="o">*</span><span class="mi">2</span> <span class="p">}</span>
+<span class="o">=&gt;</span> <span class="o">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">36</span><span class="o">]</span></code></pre></div>
+
+<p>See that little line on lines 4 &amp; 5?! Saved by the humble underscore.</p>
+
+
+
+      
+      
+      
+
+    </article>
+  
+    <article class="post">
+      <h1 class="post-title">
         <a href="/2015/01/23/hash-%5B%5D/">
           Hash[ ]
         </a>
@@ -111,138 +209,6 @@ on both creators and readers of tests due to the following:</p>
 
     </article>
   
-    <article class="post">
-      <h1 class="post-title">
-        <a href="/2014/08/20/date-in-ruby-vs-rails/">
-          Using Date - Ruby vs. Rails
-        </a>
-      </h1>
-
-      <time datetime="2014-08-20T00:00:00+03:00" class="post-date">20 Aug 2014</time>
-
-      <p>This little investigation was prompted by an interesting quirk whereby <code>Date.today == Date.tomorrow</code> returned <code>true</code>.</p>
-
-<p><code>Date.today</code> is implemented in Ruby and uses system’s local time &amp; timezone.</p>
-
-<p>In Rails, timezone can be set in <strong>config/application.rb</strong> but defaults to UTC. Thus, it can be different that local system time used by Ruby.</p>
-
-<p><code>Date.tomorrow</code> &amp; <code>Date.yesterday</code> are implemented in Rails and use <code>Date.current</code> internally.</p>
-
-<p><code>Date.current</code> is implemented in Rails thus:</p>
-
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="o">::</span><span class="no">Time</span><span class="o">.</span><span class="n">zone</span> <span class="p">?</span> <span class="o">::</span><span class="no">Time</span><span class="o">.</span><span class="n">zone</span><span class="o">.</span><span class="n">today</span> <span class="p">:</span> <span class="o">::</span><span class="no">Date</span><span class="o">.</span><span class="n">today</span></code></pre></div>
-
-<p>i.e. if <code>Time.zone</code> is set (which in Rails it is, as stated above), <code>Date.current</code>, <code>Date.tomorrow</code> &amp; <code>Date.yesterday</code> will use <code>Time.zone.today</code>. If it’s not set, which never happens in Rails, then the methods fall back to the timezone-unaware Ruby implementation.</p>
-
-<p>The solution to avoiding issues related to all this in Rails is to use the Rails implementations based on <code>Date.current</code> and avoid using Ruby’s <code>Date.today</code>.</p>
-
-
-
-      
-      
-      
-
-    </article>
-  
-    <article class="post">
-      <h1 class="post-title">
-        <a href="/2014/08/18/block-given/">
-          block_given?
-        </a>
-      </h1>
-
-      <time datetime="2014-08-18T00:00:00+03:00" class="post-date">18 Aug 2014</time>
-
-      <p>A method of the Kernel module, and thus available everywhere in Ruby, <code>block_given?</code> allows you to check whether a block was passed as an argument to a function.</p>
-
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">new_func</span>
-  <span class="k">if</span> <span class="nb">block_given?</span>
-    <span class="k">yield</span>
-  <span class="k">else</span>
-    <span class="s1">&#39;No block!&#39;</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-
-<span class="n">new_func</span>    
-<span class="c1"># =&gt; &quot;No block!&quot;</span>
-<span class="n">new_func</span> <span class="p">{</span> <span class="s1">&#39;In the block!&#39;</span> <span class="p">}</span>
-<span class="c1"># =&gt; &quot;In the block!&quot;</span></code></pre></div>
-
-<p>Here’s a less contrived example, which came out of my solution to a problem on <a href="http://rubymonk.com/learning/books/1-ruby-primer/problems/156-sum">RubyMonk</a>:</p>
-
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">MyArray</span>
-  <span class="kp">attr_reader</span> <span class="ss">:array</span>
-
-  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">array</span><span class="p">)</span>
-    <span class="vi">@array</span> <span class="o">=</span> <span class="n">array</span>
-  <span class="k">end</span>
-
-  <span class="k">def</span> <span class="nf">sum</span><span class="p">(</span><span class="n">initial_value</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
-    <span class="c1"># your code here</span>
-    <span class="vi">@array</span><span class="o">.</span><span class="n">inject</span><span class="p">(</span><span class="n">initial_value</span><span class="p">){</span> <span class="o">|</span><span class="n">sum</span><span class="p">,</span> <span class="n">n</span><span class="o">|</span> <span class="n">sum</span> <span class="o">+=</span> <span class="p">(</span><span class="nb">block_given?</span> <span class="p">?</span> <span class="k">yield</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="p">:</span> <span class="n">n</span><span class="p">)</span> <span class="p">}</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-
-<span class="n">my_array</span> <span class="o">=</span> <span class="no">MyArray</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="o">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="o">]</span><span class="p">)</span>
-<span class="n">my_array</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
-<span class="c1"># =&gt; 16 (10 + 1 + 2 + 3)</span>
-<span class="n">my_array</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="p">{</span><span class="o">|</span><span class="n">n</span><span class="o">|</span> <span class="n">n</span> <span class="o">**</span> <span class="mi">2</span> <span class="p">}</span>
-<span class="c1"># =&gt; 14 (1**2 + 2**2 + 3**2)</span></code></pre></div>
-
-<p>Without a block argument, the method simply adds array elements to a specified initial value. When a block is passed, each array element is first yielded to the block (which squares the element in the example) and <em>then</em> summed.</p>
-
-
-
-      
-      
-      
-
-    </article>
-  
-    <article class="post">
-      <h1 class="post-title">
-        <a href="/2014/06/18/rspec-3-0-1-rubymine/">
-          RSpec 3.0.1 and RubyMine
-        </a>
-      </h1>
-
-      <time datetime="2014-06-18T08:15:28+03:00" class="post-date">18 Jun 2014</time>
-
-      <p>After the recent RSpec update, warnings started showing up in RubyMine:</p>
-
-<blockquote>
-  <p>Deprecation Warnings: Treating <code>metadata[:execution_result]</code> as a hash is deprecated. Use the attributes methods to access the data instead. Called from …/teamcity/rspec3_formatter.rb: line#</p>
-</blockquote>
-
-<p>(So, RSpec is complaining that RubyMine’s formatter is not accessing its data properly?) The warnings were overwhelming to the point of obscuring the results of running the test. Simple fix:</p>
-
-<ol>
-  <li>
-    <p>open <strong>/Applications/RubyMine.app/rb/testing/patch/bdd/teamcity/spec/runner/formatter/teamcity/rspec3_formatter.rb</strong> by clicking on one of the links in the warning message</p>
-  </li>
-  <li>
-    <p>this takes you right to the offending lines (#135, 333 &amp; 340 in my version), wherein, as per the message’s instructions, the hash format</p>
-  </li>
-</ol>
-
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">started_at_ms</span> <span class="o">=</span> <span class="n">get_time_in_ms</span><span class="p">(</span><span class="n">example</span><span class="o">.</span><span class="n">execution_result</span><span class="o">[</span><span class="ss">:started_at</span><span class="o">]</span><span class="p">)</span></code></pre></div>
-
-<p>needs to be changed to an attribute accessor</p>
-
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">started_at_ms</span> <span class="o">=</span> <span class="n">get_time_in_ms</span><span class="p">(</span><span class="n">example</span><span class="o">.</span><span class="n">execution_result</span><span class="o">.</span><span class="n">started_at</span><span class="p">)</span></code></pre></div>
-
-<p>No more warnings :)</p>
-
-<p>(In the process, I also learned that while <strong>File &gt; Open Recent</strong> works to reopen <em>projects</em>, <strong>View &gt; Recent Files</strong> (or <code>⌘-E</code>) is for recently closed <em>files</em>.)</p>
-
-
-
-      
-      
-      
-
-    </article>
-  
 </div>
 
 <div class="pagination">
@@ -258,7 +224,7 @@ on both creators and readers of tests due to the following:</p>
 
       <footer class="footer">
         <small>
-          &copy; <time datetime="2015-06-29T22:50:30+03:00">2015</time> Nikita Avvakumov.
+          &copy; <time datetime="2015-11-20T16:05:55+02:00">2015</time> Nikita Avvakumov.
           Happily made with <a href="http://demo.getpoole.com/">Poole</a>.
         </small>
       </footer>

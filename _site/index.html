@@ -58,6 +58,99 @@
   
     <article class="post">
       <h1 class="post-title">
+        <a href="/2015/11/20/2015-11-19-test/">
+          Test of LSN Reviews
+        </a>
+      </h1>
+
+      <time datetime="2015-11-20T16:05:48+02:00" class="post-date">20 Nov 2015</time>
+
+      <p>Lorem ipsum dolor sit amet</p>
+
+<iframe src="http://localhost:3000/products/34?q=embed" frameborder="0" height="350" width="250">    </iframe>
+
+
+
+      
+      
+      
+
+    </article>
+  
+    <article class="post">
+      <h1 class="post-title">
+        <a href="/2015/10/31/how-constant-are-your-constants/">
+          How constant are your constants?
+        </a>
+      </h1>
+
+      <time datetime="2015-10-31T00:00:00+02:00" class="post-date">31 Oct 2015</time>
+
+      <p>When an object should not change during the execution of a program, you make it
+a constant:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="no">CONST</span> <span class="o">=</span> <span class="n">some_value</span></code></pre></div>
+
+<p>Good forever, right? Well, not really. More accurately, perhaps, not at all.
+First, there is the case of a simple reassignment:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="p">:</span><span class="mo">001</span> <span class="o">&gt;</span> <span class="no">CONST</span> <span class="o">=</span> <span class="s1">&#39;a&#39;</span>
+ <span class="o">=&gt;</span> <span class="s2">&quot;a&quot;</span>
+ <span class="p">:</span><span class="mo">002</span> <span class="o">&gt;</span> <span class="no">CONST</span> <span class="o">=</span> <span class="s1">&#39;b&#39;</span>
+<span class="p">(</span><span class="n">irb</span><span class="p">):</span><span class="mi">2</span><span class="p">:</span> <span class="ss">warning</span><span class="p">:</span> <span class="n">already</span> <span class="n">initialized</span> <span class="n">constant</span> <span class="no">CONST</span>
+<span class="p">(</span><span class="n">irb</span><span class="p">):</span><span class="mi">1</span><span class="p">:</span> <span class="ss">warning</span><span class="p">:</span> <span class="n">previous</span> <span class="n">definition</span> <span class="n">of</span> <span class="no">CONST</span> <span class="n">was</span> <span class="n">here</span>
+ <span class="o">=&gt;</span> <span class="s2">&quot;b&quot;</span>
+ <span class="p">:</span><span class="mo">003</span> <span class="o">&gt;</span> <span class="no">CONST</span>
+ <span class="o">=&gt;</span> <span class="s2">&quot;b&quot;</span></code></pre></div>
+
+<p>Ruby issues a warning, but the constant still gets reassigned. This is perhaps
+unfortunate, but at least it’s clear what happened. In other cases, the change
+of a constant can take place by less obvious means and, to boot, without raising
+any warnings.</p>
+
+
+
+      
+      
+      
+        <p>
+          <a class="btn btn-sm btn-primary" href="/2015/10/31/how-constant-are-your-constants//#read-more" role="button">Read more <i class="fa fa-arrow-circle-right"></i></a>
+        </p>
+      
+
+    </article>
+  
+    <article class="post">
+      <h1 class="post-title">
+        <a href="/2015/08/31/false-security-of-hash-fetch/">
+          Don't let Hash#fetch give you a false sense of security
+        </a>
+      </h1>
+
+      <time datetime="2015-08-31T00:00:00+03:00" class="post-date">31 Aug 2015</time>
+
+      <p>On the face of it, Hash’s <code>fetch</code> instance method is a pretty handy and fail-safe way of
+retrieving keys from a hash. It allows one to specify a default value to be
+returned if a key does not exist.</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="nb">hash</span> <span class="o">=</span> <span class="p">{</span> <span class="ss">:foo</span> <span class="o">=&gt;</span> <span class="s1">&#39;bar&#39;</span> <span class="p">}</span>
+<span class="nb">hash</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="ss">:foo</span><span class="p">,</span> <span class="s1">&#39;default&#39;</span><span class="p">)</span>   <span class="c1"># =&gt; &#39;bar&#39;</span>
+<span class="nb">hash</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="ss">:baz</span><span class="p">,</span> <span class="s1">&#39;default&#39;</span><span class="p">)</span>   <span class="c1"># =&gt; &#39;default&#39;</span></code></pre></div>
+
+
+
+      
+      
+      
+        <p>
+          <a class="btn btn-sm btn-primary" href="/2015/08/31/false-security-of-hash-fetch//#read-more" role="button">Read more <i class="fa fa-arrow-circle-right"></i></a>
+        </p>
+      
+
+    </article>
+  
+    <article class="post">
+      <h1 class="post-title">
         <a href="/2015/06/27/null-object/">
           Empowering Null Objects in a Rails application
         </a>
@@ -120,104 +213,6 @@ base clean and compartmentalized.</p>
 
     </article>
   
-    <article class="post">
-      <h1 class="post-title">
-        <a href="/2015/06/11/euro-pound-dollar-yen-ruble/">
-          € £ $ ¥ ₽
-        </a>
-      </h1>
-
-      <time datetime="2015-06-11T00:00:00+03:00" class="post-date">11 Jun 2015</time>
-
-      <p>Thanks to Stack Overflow’s <a href="http://stackoverflow.com/research/developer-survey-2015">annual survey</a>, we now have this gem (pun intended) of data:</p>
-
-<p><a href="http://stackoverflow.com/research/developer-survey-2015#work-complang"><img src="https://gemfile.files.wordpress.com/2015/06/screen-shot-2015-06-11-at-9-38-02-am.png" alt="US compensation" /></a>
-<a href="http://stackoverflow.com/research/developer-survey-2015#work-complang"><img src="https://gemfile.files.wordpress.com/2015/06/screen-shot-2015-06-11-at-9-39-20-am.png" alt="Eastern Europe compensation" /></a></p>
-
-<p>Is this as absurd as it appears? Let’s take a closer look.</p>
-
-
-
-      
-      
-      
-        <p>
-          <a class="btn btn-sm btn-primary" href="/2015/06/11/euro-pound-dollar-yen-ruble//#read-more" role="button">Read more <i class="fa fa-arrow-circle-right"></i></a>
-        </p>
-      
-
-    </article>
-  
-    <article class="post">
-      <h1 class="post-title">
-        <a href="/2015/04/18/git-hooks-ctags-and-rails/">
-          git hooks, Ctags & Rails
-        </a>
-      </h1>
-
-      <time datetime="2015-04-18T00:00:00+03:00" class="post-date">18 Apr 2015</time>
-
-      <p>Small adjustment to Tim Pope’s outstanding <a href="http://tbaggery.com/2011/08/08/effortless-ctags-with-git.html">Effortless Ctags with Git</a>:</p>
-
-<p>To get ctags to also index all bundled gems (including Rails), make the following change to the <code>ctags</code> hook</p>
-
-<p>Replace</p>
-
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">git ls-files <span class="p">|</span> <span class="se">\</span>
-  ctags --tag-relative -L - -f<span class="s2">&quot;$dir/$$.tags&quot;</span> --languages<span class="o">=</span>-javascript,sql</code></pre></div>
-
-<p>with</p>
-
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">ctags --recurse --tag-relative -f<span class="s2">&quot;$dir/$$.tags&quot;</span> --languages<span class="o">=</span>-javascript,sql <span class="sb">`</span>bundle show --paths<span class="sb">`</span> <span class="sb">`</span>git ls-files<span class="sb">`</span></code></pre></div>
-
-<p>After triggering the hook, the <code>tags</code> file takes a few seconds to generate in the background - have patience :)</p>
-
-
-
-      
-      
-      
-
-    </article>
-  
-    <article class="post">
-      <h1 class="post-title">
-        <a href="/2015/02/15/_/">
-          _
-        </a>
-      </h1>
-
-      <time datetime="2015-02-15T00:00:00+02:00" class="post-date">15 Feb 2015</time>
-
-      <p>That nondescript title is not a placeholder - this post is really about the
-underscore. It arose out of one of those rewarding moments where you suddenly
-feel that there must be a way to do something better, and a search quickly
-reveals that, indeed, there is.</p>
-
-<p>Ever evaluate a complex - particularly multi-line - expression in irb or
-Rails console and immediately after hitting the
-Return key realize that you’ve neglected to assign the return value to a
-variable? Suffer no more:</p>
-
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="mi">2</span><span class="o">.</span><span class="mi">2</span><span class="o">.</span><span class="mi">0</span> <span class="p">:</span><span class="mo">001</span> <span class="o">&gt;</span> <span class="o">[[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="o">]</span><span class="p">,</span> <span class="o">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="o">]].</span><span class="n">map</span> <span class="k">do</span> <span class="o">|</span><span class="n">pair</span><span class="o">|</span>
-<span class="mi">2</span><span class="o">.</span><span class="mi">2</span><span class="o">.</span><span class="mi">0</span> <span class="p">:</span><span class="mo">002</span> <span class="o">&gt;</span>   <span class="n">pair</span><span class="o">[</span><span class="mi">0</span><span class="o">]*</span><span class="mi">2</span> <span class="o">+</span> <span class="n">pair</span><span class="o">[</span><span class="mi">1</span><span class="o">]*</span><span class="mi">3</span>
-<span class="mi">2</span><span class="o">.</span><span class="mi">2</span><span class="o">.</span><span class="mi">0</span> <span class="p">:</span><span class="mo">003</span> <span class="o">&gt;</span> <span class="k">end</span>
-<span class="o">=&gt;</span> <span class="o">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">18</span><span class="o">]</span>
-<span class="mi">2</span><span class="o">.</span><span class="mi">2</span><span class="o">.</span><span class="mi">0</span> <span class="p">:</span><span class="mo">004</span> <span class="o">&gt;</span> <span class="n">_</span>
-<span class="o">=&gt;</span> <span class="o">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">18</span><span class="o">]</span>
-<span class="mi">2</span><span class="o">.</span><span class="mi">2</span><span class="o">.</span><span class="mi">0</span> <span class="p">:</span><span class="mo">005</span> <span class="o">&gt;</span> <span class="n">_</span><span class="o">.</span><span class="n">map</span> <span class="p">{</span> <span class="o">|</span><span class="n">c</span><span class="o">|</span> <span class="n">c</span><span class="o">*</span><span class="mi">2</span> <span class="p">}</span>
-<span class="o">=&gt;</span> <span class="o">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">36</span><span class="o">]</span></code></pre></div>
-
-<p>See that little line on lines 4 &amp; 5?! Saved by the humble underscore.</p>
-
-
-
-      
-      
-      
-
-    </article>
-  
 </div>
 
 <div class="pagination">
@@ -233,7 +228,7 @@ variable? Suffer no more:</p>
 
       <footer class="footer">
         <small>
-          &copy; <time datetime="2015-06-29T22:50:30+03:00">2015</time> Nikita Avvakumov.
+          &copy; <time datetime="2015-11-20T16:05:55+02:00">2015</time> Nikita Avvakumov.
           Happily made with <a href="http://demo.getpoole.com/">Poole</a>.
         </small>
       </footer>
