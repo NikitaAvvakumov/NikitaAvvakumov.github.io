@@ -4,7 +4,7 @@
  <title>Gemfile</title>
  <link href="http://nikitaavvakumov.github.io/gemfile/atom.xml" rel="self"/>
  <link href="http://nikitaavvakumov.github.io/gemfile/"/>
- <updated>2015-11-20T16:05:55+02:00</updated>
+ <updated>2016-02-09T00:17:56+02:00</updated>
  <id>http://nikitaavvakumov.github.io/gemfile</id>
  <author>
    <name>Nikita Avvakumov</name>
@@ -13,13 +13,60 @@
 
  
  <entry>
-   <title>Test of LSN Reviews</title>
-   <link href="http://nikitaavvakumov.github.io/gemfile/2015/11/20/2015-11-19-test/"/>
-   <updated>2015-11-20T16:05:48+02:00</updated>
-   <id>http://nikitaavvakumov.github.io/gemfile/2015/11/20/2015-11-19-test</id>
-   <content type="html">&lt;p&gt;Lorem ipsum dolor sit amet&lt;/p&gt;
+   <title>Sharing a database between Rails apps on Heroku</title>
+   <link href="http://nikitaavvakumov.github.io/gemfile/2016/02/08/sharing-rails-app-database-on-heroku/"/>
+   <updated>2016-02-08T00:00:00+02:00</updated>
+   <id>http://nikitaavvakumov.github.io/gemfile/2016/02/08/sharing-rails-app-database-on-heroku</id>
+   <content type="html">&lt;p&gt;Heroku has a convenient new way to &lt;a href=&quot;https://blog.heroku.com/archives/2015/1/23/expanding_the_power_of_add_ons&quot;&gt;share add-ons between apps&lt;/a&gt;.
+Since their postgres service is one such add-on, it becomes extremely easy to
+get two apps to talk to the same database.&lt;/p&gt;
 
-&lt;iframe src=&quot;http://localhost:3000/products/34?q=embed&quot; frameborder=&quot;0&quot; height=&quot;350&quot; width=&quot;250&quot;&gt;    &lt;/iframe&gt;
+&lt;!--more--&gt;
+
+&lt;p&gt;The easiest and most natural way to create the postgres add-on initially is
+simply to deploy the first Rails application to Heroku. Other than adding the
+&lt;code&gt;pg&lt;/code&gt; and &lt;code&gt;rails_12factor&lt;/code&gt; gems to the &lt;code&gt;production&lt;/code&gt; group of the Gemfile as
+usual, no other steps need to be taken here.&lt;/p&gt;
+
+&lt;p&gt;The second application can be created and deployed in a similar fashion, and
+Heroku will automatically add the postgresql add-on and configure it to point
+to a different database. The first step, then, is to immediately remove this
+add-on from the second app with &lt;code&gt;heroku addons:destroy heroku-postgresql&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Next, you need to find out the name of the first app’s postgresql add-on. Run
+&lt;code&gt;heroku addons&lt;/code&gt; from the first app’s local folder. The output will contain
+something along the lines of &lt;code&gt;heroku-postgresql (&amp;lt;db name&amp;gt;)&lt;/code&gt;. We are interested
+in the &lt;code&gt;&amp;lt;db name&amp;gt;&lt;/code&gt; part, and it usually comes in the form
+&lt;code&gt;ancient-savannah-12345&lt;/code&gt; as per Heroku’s default naming scheme.&lt;/p&gt;
+
+&lt;p&gt;Now the second app can be linked to the first app’s postgresql add-on by running
+&lt;code&gt;heroku addons:attach &amp;lt;db name&amp;gt; -a &amp;lt;second-app-name&amp;gt; --as &amp;lt;meaningful-name&amp;gt;&lt;/code&gt;.
+The &lt;code&gt;--as &amp;lt;meaningful-name&amp;gt;&lt;/code&gt; part is optional, but it’s not a bad idea to give
+this shared add-on a name that reflects its role, the fact that it’s shared, or
+what have you.&lt;/p&gt;
+
+&lt;p&gt;Finally, the second app needs to be configured to point to the correct Heroku
+database. Near the bottom of &lt;code&gt;config/database.yml&lt;/code&gt; there are commented-out
+instructions for doing just that. Start by removing the default configuration of
+the production db, and then uncomment&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;l-Scalar-Plain&quot;&gt;production&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;&amp;lt;%= ENV[&amp;#39;DATABASE_URL&amp;#39;] %&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Since the second app’s original postgres add-on was destroyed in the first step,
+the &lt;code&gt;&#39;DATABASE_URL&#39;&lt;/code&gt; environment variable is not set. In the first app’s local
+folder, run &lt;code&gt;heroku config:get DATABASE_URL&lt;/code&gt;. The output will look like this:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;heroku config:get DATABASE_URL
+postgres://XXXXX:YYYYY@#####.compute-1.amazonaws.com:####/#####&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This full string is the address for the first app’s postgres server together
+with the app’s authentication credentials.&lt;/p&gt;
+
+&lt;p&gt;Now, in the second app’s local folder run &lt;code&gt;heroku config:set
+DATABASE_URL=&amp;lt;postgres server&amp;gt;&lt;/code&gt;. With that done, commit and deploy to Heroku.
+To test that the setup is functional, run &lt;code&gt;heroku pg:psql&lt;/code&gt; from the second app’s
+folder. You should be able to connect to the shared database and run queries.&lt;/p&gt;
 </content>
  </entry>
  

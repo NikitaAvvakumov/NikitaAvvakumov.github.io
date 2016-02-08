@@ -10,7 +10,7 @@
 
   <title>
     
-      Test of LSN Reviews &middot; Gemfile
+      Sharing a database between Rails apps on Heroku &middot; Gemfile
     
   </title>
 
@@ -55,11 +55,58 @@
 
       <main>
         <article class="post">
-  <h1 class="post-title">Test of LSN Reviews</h1>
-  <time datetime="2015-11-20T16:05:48+02:00" class="post-date">20 Nov 2015</time>
-  <p>Lorem ipsum dolor sit amet</p>
+  <h1 class="post-title">Sharing a database between Rails apps on Heroku</h1>
+  <time datetime="2016-02-08T00:00:00+02:00" class="post-date">08 Feb 2016</time>
+  <p>Heroku has a convenient new way to <a href="https://blog.heroku.com/archives/2015/1/23/expanding_the_power_of_add_ons">share add-ons between apps</a>.
+Since their postgres service is one such add-on, it becomes extremely easy to
+get two apps to talk to the same database.</p>
 
-<iframe src="http://localhost:3000/products/34?q=embed" frameborder="0" height="350" width="250">    </iframe>
+<a class="anchor" id="read-more"></a>
+
+<p>The easiest and most natural way to create the postgres add-on initially is
+simply to deploy the first Rails application to Heroku. Other than adding the
+<code>pg</code> and <code>rails_12factor</code> gems to the <code>production</code> group of the Gemfile as
+usual, no other steps need to be taken here.</p>
+
+<p>The second application can be created and deployed in a similar fashion, and
+Heroku will automatically add the postgresql add-on and configure it to point
+to a different database. The first step, then, is to immediately remove this
+add-on from the second app with <code>heroku addons:destroy heroku-postgresql</code>.</p>
+
+<p>Next, you need to find out the name of the first app’s postgresql add-on. Run
+<code>heroku addons</code> from the first app’s local folder. The output will contain
+something along the lines of <code>heroku-postgresql (&lt;db name&gt;)</code>. We are interested
+in the <code>&lt;db name&gt;</code> part, and it usually comes in the form
+<code>ancient-savannah-12345</code> as per Heroku’s default naming scheme.</p>
+
+<p>Now the second app can be linked to the first app’s postgresql add-on by running
+<code>heroku addons:attach &lt;db name&gt; -a &lt;second-app-name&gt; --as &lt;meaningful-name&gt;</code>.
+The <code>--as &lt;meaningful-name&gt;</code> part is optional, but it’s not a bad idea to give
+this shared add-on a name that reflects its role, the fact that it’s shared, or
+what have you.</p>
+
+<p>Finally, the second app needs to be configured to point to the correct Heroku
+database. Near the bottom of <code>config/database.yml</code> there are commented-out
+instructions for doing just that. Start by removing the default configuration of
+the production db, and then uncomment</p>
+
+<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="l-Scalar-Plain">production</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">url</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;%= ENV[&#39;DATABASE_URL&#39;] %&gt;</span></code></pre></div>
+
+<p>Since the second app’s original postgres add-on was destroyed in the first step,
+the <code>'DATABASE_URL'</code> environment variable is not set. In the first app’s local
+folder, run <code>heroku config:get DATABASE_URL</code>. The output will look like this:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>heroku config:get DATABASE_URL
+postgres://XXXXX:YYYYY@#####.compute-1.amazonaws.com:####/#####</code></pre></div>
+
+<p>This full string is the address for the first app’s postgres server together
+with the app’s authentication credentials.</p>
+
+<p>Now, in the second app’s local folder run <code>heroku config:set
+DATABASE_URL=&lt;postgres server&gt;</code>. With that done, commit and deploy to Heroku.
+To test that the setup is functional, run <code>heroku pg:psql</code> from the second app’s
+folder. You should be able to connect to the shared database and run queries.</p>
 
 </article>
 
@@ -118,7 +165,7 @@
 
       <footer class="footer">
         <small>
-          &copy; <time datetime="2015-11-20T16:05:55+02:00">2015</time> Nikita Avvakumov.
+          &copy; <time datetime="2016-02-09T00:17:56+02:00">2016</time> Nikita Avvakumov.
           Happily made with <a href="http://demo.getpoole.com/">Poole</a>.
         </small>
       </footer>
