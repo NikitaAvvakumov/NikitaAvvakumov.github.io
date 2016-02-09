@@ -89,9 +89,9 @@ referenced by the constant `GREETING`. Via this new reference, the string had
 was that the class variable was irreversibly modified by a poorly designed
 instance method.
 
-The problem of inintentionally changing a constant's value can be mitigated
+The problem of unintentionally changing a constant's value can be mitigated
 somewhat by Ruby's object freezing. However, this freezing is shallow and applies to the
-object itself but not to its componets. Again, using an array as an example:
+object itself but not to its components. Again, using an array as an example:
 
 {% highlight ruby %}
  :001 > ary = [1, 2]
